@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Tablero interactivo del volumen útil de los embalses de Colombia: octubre de 2026 frente a octubre de 2025.">
+<meta name="description" content="Tablero interactivo del volumen útil de los embalses de Colombia: octubre de 2026 frente a 2025, 2024 y 2023, con datos de XM.">
 <meta property="og:title" content="Tablero de Embalses SIN">
-<meta property="og:description" content="Compara regiones y mira cada embalse en dos barriles, con referencias aproximadas de la CREG y XM.">
+<meta property="og:description" content="Compara octubre de 2026 con 2025, 2024 y 2023 por región y por embalse. Datos de XM; referencias aproximadas CREG y XM.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <style>body{margin:0}</style>
@@ -122,7 +122,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .track .tl{position:absolute;top:-4px;bottom:-4px;width:0;border-left:2px dashed var(--warn)}
 .rvals{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-size:.82rem}
 .rvals .v{font:600 .95rem/1 var(--f-mono)}
-.d{font:500 .75rem/1 var(--f-mono);padding:3px 6px;border-radius:4px}
+.d{font:500 .75rem/1 var(--f-mono);padding:3px 6px;border-radius:4px;white-space:nowrap}
 .d.dn{background:var(--bad-soft);color:var(--bad)}
 .d.up{background:var(--good-soft);color:var(--good)}
 .axis{display:grid;grid-template-columns:150px minmax(0,1fr) 128px;gap:12px;padding-inline:10px;font:400 .7rem/1 var(--f-mono);color:var(--muted)}
@@ -188,45 +188,66 @@ footer{font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap
   .panel{padding:16px}
 }
 @media (prefers-reduced-motion:reduce){.track .b25,.track .b26,.gauge .fill{transition:none}}
+
+.yearpick{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.yearpick .k{font:500 .7rem/1.2 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.drop.up{background:var(--good-soft);color:var(--good)}
+.pill.b{background:var(--bad-soft);color:var(--bad)}
+.strip{display:grid;gap:6px;margin-block:2px}
+.strip .yr{display:grid;grid-template-columns:3rem minmax(0,1fr) 3.6rem;gap:10px;align-items:center;font:500 .78rem/1 var(--f-mono)}
+.strip .sb{height:10px;border-radius:5px;background:var(--water-soft);overflow:hidden}
+.strip .sb i{display:block;height:100%;background:var(--past);border-radius:5px}
+.strip .yr.cur .sb i{background:var(--water)}
+.strip .yr.bas .sb i{background:var(--ink)}
+.strip .yr span:last-child{text-align:right}
+.chips .pill{white-space:normal}
 </style>
 
 <div class="wrap">
 
   <section class="hero">
     <div class="hero-main">
-      <span class="eyebrow">IDEAM · XM · Sistema Interconectado Nacional</span>
+      <span class="eyebrow">XM · IDEAM · Sistema Interconectado Nacional</span>
       <h1>Cuánta agua queda para generar energía</h1>
-      <p>Comparamos el volumen útil de los embalses de Colombia en octubre de 2026 con octubre de 2025. Mueve el umbral, ordena las regiones y toca cada una para entender qué está pasando.</p>
-      <span class="date">Referencia operativa · jueves 8 de octubre de 2026</span>
+      <p>Comparamos el volumen útil de los embalses de Colombia en octubre de 2026 con octubres anteriores, incluido el episodio de El Niño 2023–2024. Elige el año, fija un umbral y toca cada región.</p>
+      <div class="yearpick">
+        <span class="k">Comparar octubre de 2026 con</span>
+        <div class="seg" id="yearSeg" role="group" aria-label="Año de comparación">
+          <button type="button" data-y="2025" aria-pressed="true">Oct 2025</button>
+          <button type="button" data-y="2024" aria-pressed="false">Oct 2024</button>
+          <button type="button" data-y="2023" aria-pressed="false">Oct 2023</button>
+        </div>
+      </div>
+      <span class="date">Datos de XM · corte 8 de octubre de 2026</span>
     </div>
     <div class="big" aria-label="Agregado nacional">
       <span class="eyebrow">Agregado nacional</span>
-      <div class="row"><span class="num mono" id="natNum">71.5%</span><span class="drop" id="natDrop">−12.2 pp</span></div>
-      <div class="meter" role="img" aria-label="Nivel nacional 2026 frente a 2025"><i style="width:71.5%"></i><b style="left:83.66%"></b></div>
-      <div class="legend"><span><i class="sw" style="background:var(--water)"></i>Oct 2026 (~71.5%)</span><span><i class="sw" style="background:var(--ink)"></i>Oct 2025 (83.66%)</span></div>
-      <p class="vs">Cifras del reporte base. pp = puntos porcentuales. Ver nota al pie sobre el dato nacional.</p>
+      <div class="row"><span class="num mono" id="natNum">74.85%</span><span class="drop" id="natDrop">−8.9 pp</span></div>
+      <div class="meter" role="img" aria-label="Nivel nacional hoy frente al año elegido"><i id="natI" style="width:74.85%"></i><b id="natB" style="left:83.75%"></b></div>
+      <div class="legend"><span><i class="sw" style="background:var(--water)"></i><span id="legNow">Oct 2026 (74.85%)</span></span><span><i class="sw" style="background:var(--ink)"></i><span id="legBase">Oct 2025 (83.75%)</span></span></div>
+      <p class="vs">pp = puntos porcentuales: la diferencia entre dos porcentajes.</p>
     </div>
   </section>
 
   <section class="guide" aria-label="Cómo usar el tablero">
-    <div><span class="step mono">Paso 1</span><strong>Fija un umbral de alerta</strong><span>Usa el deslizador de la sección regional. Las regiones bajo ese nivel se marcan en rojo y se cuentan.</span></div>
-    <div><span class="step mono">Paso 2</span><strong>Ordena como prefieras</strong><span>Por nivel actual, por mayor caída o alfabético. La primera fila cambia según el criterio.</span></div>
-    <div><span class="step mono">Paso 3</span><strong>Toca una región</strong><span>Abre su detalle: cambio frente a 2025, margen sobre el umbral y los embalses que tenemos de ella.</span></div>
+    <div><span class="step mono">Paso 1</span><strong>Elige con qué octubre comparar</strong><span>Los botones de arriba cambian todo el tablero: 2025, 2024 o 2023.</span></div>
+    <div><span class="step mono">Paso 2</span><strong>Fija un umbral</strong><span>Usa el deslizador o los botones. Las regiones bajo ese nivel se marcan en rojo y se cuentan.</span></div>
+    <div><span class="step mono">Paso 3</span><strong>Toca una región</strong><span>Abre su detalle: los cuatro octubres, el margen frente al umbral y sus embalses.</span></div>
   </section>
 
   <section class="panel" id="regiones">
     <div class="head">
       <span class="eyebrow">Comparativo regional</span>
-      <h2>Una sola región subió; las otras cinco bajaron</h2>
+      <h2 id="regTitle">Comparativo por región</h2>
       <p class="muted">Volumen útil por zona hidroenergética. Toca una fila para ver su lectura.</p>
     </div>
     <div class="controls">
-      <div class="seg" role="group" aria-label="Ordenar regiones">
+      <div class="seg" role="group" aria-label="Ordenar regiones" id="sortSeg">
         <button type="button" data-sort="b" aria-pressed="true">Mayor nivel hoy</button>
         <button type="button" data-sort="d" aria-pressed="false">Mayor caída</button>
         <button type="button" data-sort="n" aria-pressed="false">A–Z</button>
       </div>
-      <label class="thr" for="thr">Umbral de alerta <input id="thr" type="range" min="40" max="90" step="1" value="70"><output id="thrOut" for="thr">70%</output></label>
+      <label class="thr" for="thr">Umbral <input id="thr" type="range" min="40" max="90" step="1" value="70"><output id="thrOut" for="thr">70%</output></label>
     </div>
     <div class="seg" id="presets" role="group" aria-label="Umbrales sugeridos">
       <button type="button" data-t="70" aria-pressed="true">70% · Criterio CREG</button>
@@ -238,28 +259,28 @@ footer{font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap
     <p class="hint">Toca cualquier fila para abrir su detalle debajo de la lista.</p>
     <div class="axis" aria-hidden="true"><span></span><div><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div><span></span></div>
     <div class="rows" id="rows"></div>
-    <div class="legend"><span><i class="sw" style="background:var(--past)"></i>Oct 2025</span><span><i class="sw" style="background:var(--water)"></i>Oct 2026</span><span><i class="sw" style="background:var(--bad)"></i>Bajo el umbral</span><span><i class="sw" style="background:var(--warn);height:3px;margin-top:4px"></i>Umbral</span></div>
+    <div class="legend"><span><i class="sw" style="background:var(--past)"></i><span id="legBar">Oct 2025</span></span><span><i class="sw" style="background:var(--water)"></i>Oct 2026</span><span><i class="sw" style="background:var(--bad)"></i>Bajo el umbral</span><span><i class="sw" style="background:var(--warn);height:3px;margin-top:4px"></i>Umbral</span></div>
     <div class="detail" id="detail"></div>
   </section>
 
   <section class="panel" id="embalses">
     <div class="head">
       <span class="eyebrow">Detalle operativo</span>
-      <h2>Los embalses principales, uno por uno</h2>
-      <p class="muted">Cada embalse tiene dos barriles: el gris es octubre de 2025 y el azul es octubre de 2026. Compara la altura del agua y lee el cambio en la etiqueta.</p>
+      <h2>Los embalses, uno por uno</h2>
+      <p class="muted" id="embSub">Cada embalse principal tiene dos barriles.</p>
     </div>
     <div class="controls"><input id="searchInput" class="search" type="search" placeholder="Filtrar embalse o región…" aria-label="Filtrar embalse o región"></div>
     <div class="tanks" id="tanks"></div>
-    <div class="tabwrap"><table id="tbl"><thead><tr><th>Región</th><th>Embalse</th><th class="r">Oct 2025</th><th class="r">Oct 2026</th><th class="r">Cambio</th><th>Estado</th></tr></thead><tbody></tbody></table></div>
+    <div class="tabwrap"><table id="tbl"><thead><tr><th>Región</th><th>Embalse</th><th class="r" id="thBase">Oct 2025</th><th class="r">Oct 2026</th><th class="r">Cambio</th><th>Frente a 70% y 80%</th></tr></thead><tbody></tbody></table></div>
   </section>
 
   <section class="panel">
     <div class="head">
       <span class="eyebrow">Ponte a prueba</span>
-      <h2>¿Qué región perdió más nivel?</h2>
+      <h2 id="quizQ">¿Qué región perdió más nivel?</h2>
     </div>
     <div class="quiz" id="quiz" role="group" aria-label="Opciones"></div>
-    <p class="fb" id="fb" aria-live="polite">Elige una región. Pista: mira el cambio en rojo de la lista de arriba.</p>
+    <p class="fb" id="fb" aria-live="polite">Elige una región. Pista: busca el mayor cambio en rojo de la lista de arriba.</p>
     <p class="score" id="score">Intentos: 0 · Aciertos: 0</p>
   </section>
 
@@ -276,34 +297,27 @@ footer{font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap
   </section>
 
   <footer>
-    <p><strong>Nota sobre los datos.</strong> Las cifras son las del reporte extraído, sin recalcular. Los seis valores regionales de 2026 promedian 71.6%, cerca del agregado de ~71.5%. Los de 2025 promedian 78.2%, por debajo del agregado de 83.66%, así que conviene confirmar con XM cómo se pondera cada cifra.</p>
+    <p><strong>Datos.</strong> Volumen útil diario y capacidad útil diaria de energía por embalse, tomados de la API pública de XM el 10 de octubre de 2026. Cada región es el volumen sumado dividido por la capacidad sumada de sus embalses, según la región hidrológica que XM asigna a cada uno. El nacional suma los 24 embalses. En el corte de 2024 la respuesta de XM no incluye a Miraflores, así que ese año no lo suma. Octubre de 2023, 2024 y 2025 usa el corte del 31 de octubre; 2026 usa el del 8 de octubre, así que aún no incluye el resto del mes. El nacional de 2025 calculado aquí (83.75%) difiere en 0.09 pp del 83.66% publicado por Portafolio.</p>
     <p><strong>Referencias normativas.</strong> El criterio del 70% proviene del esquema de la senda de referencia de la CREG (Resolución CREG 026 de 2014, modificada por las Resoluciones 209 de 2020 y 210 de 2021), según el <a href="https://gestornormativo.creg.gov.co/gestor/entorno/docs/pdf/doc_creg_0901_31_2023.pdf" target="_blank" rel="noopener">Documento CREG 901 031 de 2023</a>. Su vigencia en 2026 no está confirmada aquí. La meta del 80% ante El Niño la reporta <a href="https://www.larepublica.co/economia/nivel-de-embalses-esta-en-79-24-0-43-pps-debajo-de-la-senda-de-referencia-de-la-creg-4481898" target="_blank" rel="noopener">La República</a> citando a XM (15 de septiembre de 2026). Ambas son aproximaciones didácticas: la operación real usa la senda diaria del SIN y puede variar.</p>
-    <p><strong>Dato nacional.</strong> El ~71.5% del reporte coincide con el promedio simple de las seis regiones. La República citó a XM con 79.24% el 15 de septiembre, así que conviene confirmar la cifra nacional vigente en XM.</p>
-    <p><strong>Comparto con base en fuentes:</strong> <a href="https://www.xm.com.co" target="_blank" rel="noopener">XM S.A. E.S.P.</a> para volumen útil y reservas del SIN,, el <a href="https://www.ideam.gov.co" target="_blank" rel="noopener">IDEAM</a> para el contexto hidrometeorológico y los aportes hídricos, y la <a href="https://www.creg.gov.co" target="_blank" rel="noopener">CREG</a> para la normativa. Material con fines técnicos y educativos.</p>
+    <p><strong>Comparto con base en fuentes:</strong> <a href="https://www.xm.com.co" target="_blank" rel="noopener">XM S.A. E.S.P.</a> para volumen útil y reservas del SIN, el <a href="https://www.ideam.gov.co" target="_blank" rel="noopener">IDEAM</a> para el contexto hidrometeorológico y los aportes hídricos, y la <a href="https://www.creg.gov.co" target="_blank" rel="noopener">CREG</a> para la normativa. Material con fines técnicos y educativos.</p>
   </footer>
 </div>
 
 <script>
-var regions=[
- {n:"Oriente",a:85.2,b:88.8,t:"Es la única región que subió. La sostienen Chuza y Guavio, que están por encima del 84%."},
- {n:"Caribe",a:78.4,b:74.7,t:"Baja moderada: pasa de nivel alto a nivel medio-alto."},
- {n:"Antioquia",a:81.1,b:73.0,t:"Pierde cerca de 8 puntos. El Peñol, su embalse de la tabla, se mantiene estable en 79.1%."},
- {n:"Centro",a:80.5,b:70.6,t:"Cae unos 10 puntos en conjunto, aunque El Quimbo y Betania suben por separado en la tabla."},
- {n:"Caldas",a:75.0,b:63.5,t:"Es la mayor caída porcentual del comparativo y queda en el rango bajo."},
- {n:"Valle",a:68.9,b:58.7,t:"Es la región con menor nivel hoy. Parte de una base ya baja en 2025."}
-];
-var res=[
- {r:"Oriente",n:"Chuza",a:89.0,b:90.8,s:"Excelente",c:"g"},
- {r:"Oriente",n:"Guavio",a:82.5,b:84.8,s:"Óptimo",c:"g"},
- {r:"Antioquia",n:"El Peñol",a:78.0,b:79.1,s:"Estable",c:"n"},
- {r:"Centro",n:"El Quimbo",a:81.0,b:84.6,s:"Firme",c:"g"},
- {r:"Centro",n:"Betania",a:67.0,b:69.6,s:"Regular / En rango",c:"n"}
-];
-var sortKey="b",sel="Oriente",tries=0,hits=0;
-function f1(x){return x.toFixed(1)}
-function dl(r){return r.b-r.a}
-function sgn(x){return (x>=0?"+":"−")+Math.abs(x).toFixed(1)+" pp"}
+var YEARS=[2023,2024,2025,2026];
+var NAT={"2023": 72.79, "2024": 56.78, "2025": 83.75, "2026": 74.85};
+var regions=[{"n": "Antioquia", "v": {"2023": 81.13, "2024": 59.52, "2025": 94.19, "2026": 73.04}}, {"n": "Caldas", "v": {"2023": 82.98, "2024": 71.88, "2025": 85.22, "2026": 63.53}}, {"n": "Caribe", "v": {"2023": 92.15, "2024": 86.29, "2025": 93.52, "2026": 74.68}}, {"n": "Centro", "v": {"2023": 69.14, "2024": 53.32, "2025": 74.3, "2026": 70.61}}, {"n": "Oriente", "v": {"2023": 69.91, "2024": 63.97, "2025": 93.04, "2026": 88.84}}, {"n": "Valle", "v": {"2023": 39.12, "2024": 21.58, "2025": 33.46, "2026": 58.69}}];
+var res=[{"r": "Antioquia", "n": "El Peñol", "main": true, "v": {"2023": 82.8, "2024": 58.15, "2025": 101.42, "2026": 78.08}}, {"r": "Antioquia", "n": "Ituango", "main": false, "v": {"2023": 58.48, "2024": 10.94, "2025": 92.0, "2026": 42.41}}, {"r": "Antioquia", "n": "Miraflores", "main": false, "v": {"2023": 84.74, "2025": 71.93, "2026": 80.0}}, {"r": "Antioquia", "n": "Playas", "main": false, "v": {"2023": 110.87, "2024": 49.1, "2025": 120.41, "2026": 69.01}}, {"r": "Antioquia", "n": "Porce II", "main": false, "v": {"2023": 46.07, "2024": 71.63, "2025": 53.83, "2026": 59.08}}, {"r": "Antioquia", "n": "Porce III", "main": false, "v": {"2023": 61.69, "2024": 62.86, "2025": 67.79, "2026": 48.23}}, {"r": "Antioquia", "n": "Punchiná", "main": false, "v": {"2023": 71.63, "2024": 33.01, "2025": 44.63, "2026": 15.74}}, {"r": "Antioquia", "n": "Riogrande II", "main": false, "v": {"2023": 90.1, "2024": 74.28, "2025": 91.01, "2026": 58.62}}, {"r": "Antioquia", "n": "San Lorenzo", "main": false, "v": {"2023": 87.8, "2024": 89.26, "2025": 77.31, "2026": 71.91}}, {"r": "Antioquia", "n": "Troneras", "main": false, "v": {"2023": 60.02, "2024": 36.63, "2025": 63.49, "2026": 82.88}}, {"r": "Caldas", "n": "Amaní", "main": false, "v": {"2023": 82.98, "2024": 71.88, "2025": 85.22, "2026": 63.53}}, {"r": "Caribe", "n": "Urrá I", "main": false, "v": {"2023": 92.15, "2024": 86.29, "2025": 93.52, "2026": 74.68}}, {"r": "Centro", "n": "Agregado Bogotá", "main": false, "v": {"2023": 66.26, "2024": 51.62, "2025": 63.38, "2026": 66.38}}, {"r": "Centro", "n": "Betania", "main": true, "v": {"2023": 63.74, "2024": 51.7, "2025": 87.98, "2026": 69.64}}, {"r": "Centro", "n": "El Quimbo", "main": true, "v": {"2023": 63.43, "2024": 49.43, "2025": 91.55, "2026": 84.6}}, {"r": "Centro", "n": "Muña", "main": false, "v": {"2023": 78.63, "2024": 85.88, "2025": 97.73, "2026": 66.99}}, {"r": "Centro", "n": "Prado", "main": false, "v": {"2023": 28.98, "2024": 10.02, "2025": 30.73, "2026": 36.99}}, {"r": "Centro", "n": "Topocoro", "main": false, "v": {"2023": 89.82, "2024": 66.11, "2025": 100.31, "2026": 75.86}}, {"r": "Oriente", "n": "Chuza", "main": true, "v": {"2023": 47.5, "2024": 34.02, "2025": 92.11, "2026": 90.75}}, {"r": "Oriente", "n": "Esmeralda", "main": false, "v": {"2023": 80.87, "2024": 79.26, "2025": 94.77, "2026": 95.66}}, {"r": "Oriente", "n": "Guavio", "main": true, "v": {"2023": 76.22, "2024": 72.19, "2025": 92.33, "2026": 84.83}}, {"r": "Valle", "n": "Alto Anchicayá", "main": false, "v": {"2023": 47.1, "2024": 49.34, "2025": 15.53, "2026": 28.76}}, {"r": "Valle", "n": "Calima I", "main": false, "v": {"2023": 65.28, "2024": 34.35, "2025": 92.43, "2026": 62.29}}, {"r": "Valle", "n": "Salvajina", "main": false, "v": {"2023": 27.61, "2024": 14.35, "2025": 9.73, "2026": 59.18}}];
+
+var base=2025,sortKey="b",sel="Oriente",tries=0,hits=0;
+function f1(x){return x==null||isNaN(x)?"—":x.toFixed(1)}
+function f2(x){return x.toFixed(2)}
+function sgn(x){return x==null||isNaN(x)?"—":(x>=0?"+":"−")+Math.abs(x).toFixed(1)+" pp"}
 function thr(){return +document.getElementById("thr").value}
+function A(r){return r.v[base]}
+function B(r){return r.v[2026]}
+function dl(r){return B(r)-A(r)}
+function $(id){return document.getElementById(id)}
 function band(T){
   if(T===80)return{c:"l1",t:"Meta de XM ante El Niño",m:"Según La República (15 sep. 2026), XM fijó una meta de llenado del 80% para enfrentar El Niño. Las regiones bajo este valor aún no alcanzan esa meta."};
   if(T===70)return{c:"l2",t:"Criterio CREG del 70%",m:"En el esquema de la senda de referencia de la CREG (Res. 026 de 2014, modificada por las 209 de 2020 y 210 de 2021), un embalse útil sobre 70% se considera superior. La norma lo aplica al SIN completo; aquí se usa como referencia por región."};
@@ -311,95 +325,134 @@ function band(T){
   if(T>70)return{c:"l2",t:"Entre el criterio CREG y la meta de XM",m:"Está entre el 70% (criterio CREG) y el 80% (meta de XM). Sirve para ver qué regiones se acercan a cada referencia."};
   return{c:"l4",t:"Bajo el criterio CREG del 70%",m:"Por debajo del 70% se pierde el estatus superior del criterio CREG. Cortes como 60% o 50% son valores propios de este tablero y no tienen respaldo normativo."};
 }
-
+function renderHero(){
+  var a=NAT[base],b=NAT[2026],d=b-a;
+  $("natNum").textContent=f2(b)+"%";
+  var dd=$("natDrop");dd.textContent=sgn(d);dd.className="drop"+(d>=0?" up":"");
+  $("natI").style.width=b+"%";$("natB").style.left=a+"%";
+  $("legNow").textContent="Oct 2026 ("+f2(b)+"%)";
+  $("legBase").textContent="Oct "+base+" ("+f2(a)+"%)";
+  $("legBar").textContent="Oct "+base;
+  $("thBase").textContent="Oct "+base;
+}
 function renderRows(){
   var T=thr(),list=regions.slice();
   list.sort(function(p,q){
-    if(sortKey==="b")return q.b-p.b;
+    if(sortKey==="b")return B(q)-B(p);
     if(sortKey==="d")return dl(p)-dl(q);
     return p.n.localeCompare(q.n,"es");
   });
   var h="";
   list.forEach(function(r){
-    var low=r.b<T,d=dl(r),m=r.b-T;
+    var low=B(r)<T,d=dl(r),m=B(r)-T;
     h+='<button type="button" class="rrow'+(low?" low":"")+'" data-r="'+r.n+'" aria-pressed="'+(sel===r.n)+'">'+
-      '<span class="rname">'+r.n+'<small class="'+(low?"in":"ok")+'">'+(low?"En alerta · ":"")+Math.abs(m).toFixed(1)+' pp '+(low?"bajo":"sobre")+' el umbral</small></span>'+
-      '<span class="track"><span class="b25" style="width:'+r.a+'%"></span><span class="b26" style="width:'+r.b+'%"></span><span class="tl" style="left:'+T+'%"></span></span>'+
-      '<span class="rvals"><span class="v">'+f1(r.b)+'%</span><span class="d '+(d<0?"dn":"up")+'">'+sgn(d)+'</span></span></button>';
+      '<span class="rname">'+r.n+'<small class="'+(low?"in":"ok")+'">'+(low?"Bajo el umbral · ":"")+Math.abs(m).toFixed(1)+' pp '+(low?"por debajo":"sobre")+(low?"":" el umbral")+'</small></span>'+
+      '<span class="track"><span class="b25" style="width:'+A(r)+'%"></span><span class="b26" style="width:'+B(r)+'%"></span><span class="tl" style="left:'+T+'%"></span></span>'+
+      '<span class="rvals"><span class="v">'+f1(B(r))+'%</span><span class="d '+(d<0?"dn":"up")+'">'+sgn(d)+'</span></span></button>';
   });
-  document.getElementById("rows").innerHTML=h;
-  var n=regions.filter(function(r){return r.b<T}).length;
-  document.getElementById("thrMsg").textContent=n===0?"Con un umbral de "+T+"%, ninguna región está en alerta.":
-    (n===1?"1 de 6 regiones":n+" de 6 regiones")+" quedan por debajo de "+T+"%: "+regions.filter(function(r){return r.b<T}).map(function(r){return r.n}).join(", ")+".";
-  document.getElementById("thrOut").textContent=T+"%";
-  var bd=band(T),bm=document.getElementById("bandMsg");
+  $("rows").innerHTML=h;
+  var below=regions.filter(function(r){return B(r)<T});
+  var n=below.length;
+  $("thrMsg").textContent=n===0?"Con un umbral de "+T+"%, ninguna región está por debajo.":
+    (n===1?"1 de 6 regiones":n+" de 6 regiones")+" quedan por debajo de "+T+"%: "+below.map(function(r){return r.n}).join(", ")+".";
+  $("thrOut").textContent=T+"%";
+  var bd=band(T),bm=$("bandMsg");
   bm.className="band "+bd.c;
   bm.innerHTML="<strong>"+bd.t+" · umbral de "+T+"%</strong><span>"+bd.m+"</span><small>Aproximación a la norma con fines didácticos. La operación real la evalúan XM y la CREG con la senda de referencia diaria del SIN y puede variar.</small>";
   document.querySelectorAll("#presets button").forEach(function(x){x.setAttribute("aria-pressed",+x.getAttribute("data-t")===T)});
-  var fell=regions.filter(function(r){return dl(r)<0}).length;
+  var rose=regions.filter(function(r){return dl(r)>0}),fell=regions.filter(function(r){return dl(r)<0});
   var worst=regions.slice().sort(function(p,q){return dl(p)-dl(q)})[0];
-  var lowest=regions.slice().sort(function(p,q){return p.b-q.b})[0];
-  document.getElementById("kpis").innerHTML=
-    '<div class="kpi'+(n>0?" alert":"")+'"><span class="k">En alerta (&lt; '+T+'%)</span><span class="n">'+n+' de 6</span><span class="s">regiones bajo tu umbral</span></div>'+
-    '<div class="kpi"><span class="k">Bajaron vs 2025</span><span class="n">'+fell+' de 6</span><span class="s">solo Oriente subió</span></div>'+
-    '<div class="kpi"><span class="k">Mayor caída</span><span class="n">'+worst.n+'</span><span class="s">'+sgn(dl(worst))+'</span></div>'+
-    '<div class="kpi"><span class="k">Menor nivel hoy</span><span class="n">'+lowest.n+'</span><span class="s">'+f1(lowest.b)+'%</span></div>';
+  var lowest=regions.slice().sort(function(p,q){return B(p)-B(q)})[0];
+  var roseTxt=rose.length===0?"ninguna subió":rose.length===1?"solo "+rose[0].n+" subió":rose.length+" subieron";
+  $("kpis").innerHTML=
+    '<div class="kpi'+(n>0?" alert":"")+'"><span class="k">Bajo el umbral ('+T+'%)</span><span class="n">'+n+' de 6</span><span class="s">regiones hoy</span></div>'+
+    '<div class="kpi"><span class="k">Bajaron vs oct '+base+'</span><span class="n">'+fell.length+' de 6</span><span class="s">'+roseTxt+'</span></div>'+
+    '<div class="kpi"><span class="k">Mayor caída vs '+base+'</span><span class="n">'+(dl(worst)<0?worst.n:"—")+'</span><span class="s">'+(dl(worst)<0?sgn(dl(worst)):"ninguna región bajó")+'</span></div>'+
+    '<div class="kpi"><span class="k">Menor nivel hoy</span><span class="n">'+lowest.n+'</span><span class="s">'+f1(B(lowest))+'%</span></div>';
+  var title;
+  if(rose.length===1&&fell.length===5)title=rose[0].n+" es la única región que subió frente a oct "+base;
+  else if(fell.length===1&&rose.length===5)title=fell[0].n+" es la única región que bajó frente a oct "+base;
+  else if(fell.length>=rose.length)title=fell.length+" de 6 regiones bajaron frente a oct "+base;
+  else title=rose.length+" de 6 regiones subieron frente a oct "+base;
+  $("regTitle").textContent=title;
   renderDetail();
 }
 function renderDetail(){
   var r=regions.filter(function(x){return x.n===sel})[0];if(!r)return;
-  var d=dl(r),rank=regions.slice().sort(function(p,q){return q.b-p.b}).map(function(x){return x.n}).indexOf(r.n)+1;
-  var T=thr(),m=r.b-T;
+  var T=thr(),d=dl(r),m=B(r)-T;
+  var rank=regions.slice().sort(function(p,q){return B(q)-B(p)}).map(function(x){return x.n}).indexOf(r.n)+1;
+  var vals=YEARS.map(function(y){return r.v[y]}),hi=Math.max.apply(null,vals),lo=Math.min.apply(null,vals);
+  function yOf(val){return YEARS.filter(function(y){return r.v[y]===val})[0]}
+  var strip=YEARS.map(function(y){
+    return '<div class="yr'+(y===2026?" cur":(y===base?" bas":""))+'"><span>'+y+'</span><span class="sb"><i style="width:'+r.v[y]+'%"></i></span><span>'+f1(r.v[y])+'%</span></div>';
+  }).join("");
+  var txt="Hoy está en "+f1(B(r))+"%. "+(B(r)===hi?"Es el nivel más alto de los cuatro octubres.":B(r)===lo?"Es el nivel más bajo de los cuatro octubres.":
+    "Entre los cuatro octubres, el más alto fue "+yOf(hi)+" ("+f1(hi)+"%) y el más bajo "+yOf(lo)+" ("+f1(lo)+"%).");
   var emb=res.filter(function(x){return x.r===r.n});
-  var embTxt=emb.length?emb.map(function(x){return '<span class="pill '+x.c+'">'+x.n+' · '+f1(x.b)+'% ('+sgn(x.b-x.a)+')</span>'}).join(""):'<span class="muted">Este reporte no incluye embalses individuales de esta región.</span>';
-  document.getElementById("detail").innerHTML='<h3>'+r.n+'</h3>'+
-   '<div class="mini"><div><span class="k">Oct 2025</span><span class="v">'+f1(r.a)+'%</span></div><div><span class="k">Oct 2026</span><span class="v">'+f1(r.b)+'%</span></div><div><span class="k">Cambio</span><span class="v" style="color:var(--'+(d<0?'bad':'good')+')">'+sgn(d)+'</span></div><div><span class="k">Frente al umbral ('+T+'%)</span><span class="v" style="color:var(--'+(m<0?'bad':'good')+')">'+(m<0?'−':'+')+Math.abs(m).toFixed(1)+' pp</span></div><div><span class="k">Puesto por nivel</span><span class="v">'+rank+' de 6</span></div></div>'+
-   '<p>'+r.t+'</p><div class="chips">'+embTxt+'</div>';
+  var chips=emb.map(function(x){var c=x.v[2026]-x.v[base];return '<span class="pill n">'+x.n+" · "+f1(x.v[2026])+"% ("+sgn(c)+")</span>"}).join("");
+  $("detail").innerHTML='<h3>'+r.n+'</h3>'+
+   '<div class="mini"><div><span class="k">Oct '+base+'</span><span class="v">'+f1(A(r))+'%</span></div><div><span class="k">Oct 2026</span><span class="v">'+f1(B(r))+'%</span></div><div><span class="k">Cambio</span><span class="v" style="color:var(--'+(d<0?'bad':'good')+')">'+sgn(d)+'</span></div><div><span class="k">Frente al umbral ('+T+'%)</span><span class="v" style="color:var(--'+(m<0?'bad':'good')+')">'+(m<0?'−':'+')+Math.abs(m).toFixed(1)+' pp</span></div><div><span class="k">Puesto por nivel</span><span class="v">'+rank+' de 6</span></div></div>'+
+   '<div class="strip" aria-label="Cuatro octubres">'+strip+'</div><p>'+txt+'</p><div class="chips">'+chips+'</div>';
+}
+function estado(x){
+  if(x==null)return '<span class="pill n">Sin dato</span>';
+  if(x>=80)return '<span class="pill g">Sobre 80% (meta XM)</span>';
+  if(x>=70)return '<span class="pill n">Entre 70% y 80%</span>';
+  return '<span class="pill b">Bajo 70%</span>';
 }
 function renderTanks(){
-  var q=document.getElementById("searchInput").value.toLowerCase().trim();
+  var q=$("searchInput").value.toLowerCase().trim();
   var list=res.filter(function(x){return (x.n+" "+x.r).toLowerCase().indexOf(q)>-1});
+  var main=list.filter(function(x){return x.main});
   var h="";
-  list.forEach(function(x){
-    var dd=x.b-x.a;
+  main.forEach(function(x){
+    var a=x.v[base],b=x.v[2026],dd=b-a;
     h+='<div class="tank"><div class="pair">'+
-    '<div class="col old"><div class="gauge old" role="img" aria-label="'+x.n+' octubre 2025: '+f1(x.a)+'%"><div class="fill p" style="height:'+x.a+'%"></div></div><span class="pc">'+f1(x.a)+'%</span><span class="yr">OCT 2025</span></div>'+
-    '<div class="col now"><div class="gauge" role="img" aria-label="'+x.n+' octubre 2026: '+f1(x.b)+'%"><div class="fill" style="height:'+x.b+'%"></div></div><span class="pc">'+f1(x.b)+'%</span><span class="yr">OCT 2026</span></div></div>'+
-    '<div class="tinfo"><span class="reg">'+x.r+'</span><span class="nm">'+x.n+'</span><span class="chg '+(dd<0?"dn":"up")+'">'+sgn(dd)+' vs 2025</span><span class="pill '+x.c+'">'+x.s+'</span></div></div>';
+    '<div class="col old"><div class="gauge old" role="img" aria-label="'+x.n+' octubre '+base+': '+f1(a)+'%"><div class="fill p" style="height:'+Math.min(a||0,100)+'%"></div></div><span class="pc">'+f1(a)+'%</span><span class="yr">OCT '+base+'</span></div>'+
+    '<div class="col now"><div class="gauge" role="img" aria-label="'+x.n+' octubre 2026: '+f1(b)+'%"><div class="fill" style="height:'+Math.min(b||0,100)+'%"></div></div><span class="pc">'+f1(b)+'%</span><span class="yr">OCT 2026</span></div></div>'+
+    '<div class="tinfo"><span class="reg">'+x.r+'</span><span class="nm">'+x.n+'</span><span class="chg '+(dd<0?"dn":"up")+'">'+sgn(dd)+' vs '+base+'</span>'+estado(b)+'</div></div>';
   });
-  document.getElementById("tanks").innerHTML=h||'<p class="empty">Ningún embalse coincide con ese filtro.</p>';
-  var b="";
-  list.forEach(function(x){var d=x.b-x.a;
-    b+='<tr><td>'+x.r+'</td><td><strong>'+x.n+'</strong></td><td class="r mono">'+f1(x.a)+'%</td><td class="r mono">'+f1(x.b)+'%</td><td class="r"><span class="d '+(d<0?"dn":"up")+'">'+sgn(d)+'</span></td><td><span class="pill '+x.c+'">'+x.s+'</span></td></tr>';});
-  document.querySelector("#tbl tbody").innerHTML=b||'<tr><td colspan="6" class="empty">Sin resultados.</td></tr>';
+  $("tanks").innerHTML=h||'<p class="empty">Ningún embalse principal coincide con ese filtro. Mira la tabla de abajo.</p>';
+  var rows="";
+  list.forEach(function(x){var a=x.v[base],b=x.v[2026],dd=b-a;
+    rows+='<tr><td>'+x.r+'</td><td><strong>'+x.n+'</strong></td><td class="r mono">'+f1(a)+'%</td><td class="r mono">'+f1(b)+'%</td><td class="r"><span class="d '+(dd<0?"dn":"up")+'">'+sgn(dd)+'</span></td><td>'+estado(b)+'</td></tr>';});
+  document.querySelector("#tbl tbody").innerHTML=rows||'<tr><td colspan="6" class="empty">Sin resultados.</td></tr>';
+  $("embSub").textContent="Cada embalse principal tiene dos barriles: el gris es octubre de "+base+" y el azul octubre de 2026. La tabla incluye los 24 embalses del sistema.";
 }
 function buildQuiz(){
-  document.getElementById("quiz").innerHTML=regions.map(function(r){return '<button type="button" data-q="'+r.n+'">'+r.n+'</button>'}).join("");
+  $("quiz").innerHTML=regions.map(function(r){return '<button type="button" data-q="'+r.n+'">'+r.n+'</button>'}).join("");
+  $("quizQ").textContent="¿Qué región perdió más nivel frente a octubre de "+base+"?";
+  $("fb").textContent="Elige una región. Pista: busca el mayor cambio en rojo de la lista de arriba.";
 }
-document.getElementById("rows").addEventListener("click",function(e){
+$("rows").addEventListener("click",function(e){
   var b=e.target.closest(".rrow");if(!b)return;sel=b.getAttribute("data-r");renderRows();
 });
-document.querySelector(".seg").addEventListener("click",function(e){
+$("sortSeg").addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;sortKey=b.getAttribute("data-sort");
-  document.querySelectorAll(".seg button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});renderRows();
+  document.querySelectorAll("#sortSeg button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});renderRows();
 });
-document.getElementById("thr").addEventListener("input",renderRows);
-document.getElementById("presets").addEventListener("click",function(e){
+$("yearSeg").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;base=+b.getAttribute("data-y");
+  document.querySelectorAll("#yearSeg button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});
+  renderHero();renderRows();renderTanks();buildQuiz();
+});
+$("thr").addEventListener("input",renderRows);
+$("presets").addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;
-  document.getElementById("thr").value=b.getAttribute("data-t");renderRows();
+  $("thr").value=b.getAttribute("data-t");renderRows();
 });
-document.getElementById("searchInput").addEventListener("input",renderTanks);
-document.getElementById("quiz").addEventListener("click",function(e){
+$("searchInput").addEventListener("input",renderTanks);
+$("quiz").addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;
   var worst=regions.slice().sort(function(p,q){return dl(p)-dl(q)})[0];
   document.querySelectorAll("#quiz button").forEach(function(x){x.className=""});
   var ok=b.getAttribute("data-q")===worst.n;
   b.className=ok?"ok":"no";
   tries++;if(ok)hits++;
-  document.getElementById("score").textContent="Intentos: "+tries+" · Aciertos: "+hits;
-  document.getElementById("fb").textContent=ok?"Correcto. "+worst.n+" cayó "+Math.abs(dl(worst)).toFixed(1)+" pp, de "+f1(worst.a)+"% a "+f1(worst.b)+"%.":
+  $("score").textContent="Intentos: "+tries+" · Aciertos: "+hits;
+  $("fb").textContent=ok?"Correcto. "+worst.n+" cayó "+Math.abs(dl(worst)).toFixed(1)+" pp, de "+f1(A(worst))+"% a "+f1(B(worst))+"%.":
     "No. Mira el cambio en rojo de cada fila: la mayor caída fue la de "+worst.n+" ("+sgn(dl(worst))+").";
 });
-renderRows();renderTanks();buildQuiz();
+renderHero();renderRows();renderTanks();buildQuiz();
 </script>
 </html>
