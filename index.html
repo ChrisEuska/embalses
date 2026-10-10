@@ -201,11 +201,82 @@ footer{font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap
 .strip .yr.bas .sb i{background:var(--ink)}
 .strip .yr span:last-child{text-align:right}
 .chips .pill{white-space:normal}
+
+:root{--onfill:#ffffff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--onfill:#04202b}}
+:root[data-theme="dark"]{--onfill:#04202b}
+body{padding-block:28px 100px}
+.hero{position:relative}
+.hero .byl{line-height:1.5}
+@media (min-width:860px){.hero .byl{position:absolute;top:0;right:0;max-width:30rem;text-align:right}}
+.byline{align-self:flex-end;text-align:right;display:flex;flex-direction:column;gap:2px;max-width:34rem}
+.byline strong{font:600 .86rem/1.3 var(--f-body)}
+.byline span{font-size:.78rem;color:var(--muted);line-height:1.35}
+
+/* Mapa */
+.mapbox{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:22px;align-items:start;background:var(--bg);border-radius:12px;padding:16px}
+.mapcol svg{width:100%;height:auto;display:block;border-radius:10px;background:var(--water-soft)}
+.mapcol .land{fill:var(--surface);stroke:var(--line);stroke-width:.8}
+.mapcol .col{fill:var(--surface);stroke:var(--muted);stroke-width:1.1}
+.mapcol .sea,.mapcol .nbl{font:italic 400 8.5px var(--f-body);fill:var(--muted)}
+.mapcol .nbl{font-style:normal;letter-spacing:.06em;text-transform:uppercase;font-size:7.5px}
+.mapcol .zn{fill:var(--water);fill-opacity:.28;stroke:var(--water);stroke-width:1.4;stroke-dasharray:4 3;cursor:pointer}
+.mapcol .zn.low{fill:var(--bad);stroke:var(--bad)}
+.mapcol .zn.sel{fill-opacity:.42;stroke-dasharray:none}
+.mapcol.m-peso .mk circle{fill-opacity:.62}
+.mapcol.m-peso .mk.low circle{fill:var(--water)}
+.mapcol .mk .cp{font:500 8px var(--f-mono);fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+.maptog{margin:0 0 12px}
+.maptog .seg{flex-wrap:wrap}
+.mapnote{font-size:.86rem;color:var(--muted)}
+.mapcol .mk circle{fill:var(--water);stroke:var(--surface);stroke-width:2;transition:r .2s}
+.mapcol .mk.low circle{fill:var(--bad)}
+.mapcol .mk.sel circle{stroke:var(--ink);stroke-width:2.5}
+.mapcol .mk .pc{font:700 8.6px var(--f-mono);fill:var(--onfill);pointer-events:none}
+.mapcol .mk .nm{font:600 9px var(--f-body);fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+.mapcol .mk:focus-visible circle{stroke:var(--ink);stroke-width:3}
+.maptxt{display:flex;flex-direction:column;gap:10px;min-width:0}
+.maplist{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.88rem}
+.maplist li{display:grid;grid-template-columns:7.2rem minmax(0,1fr);gap:8px;align-items:baseline}
+.maplist b{font-weight:600}
+.maplist .mono{font-size:.8rem;color:var(--muted)}
+.maplist em{font-style:normal;color:var(--muted);font-size:.82rem}
+
+/* Asistente */
+.fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:inline-flex;align-items:center;gap:8px;background:var(--water);color:var(--onfill);border:0;border-radius:999px;padding:12px 18px;font:600 .9rem/1 var(--f-body);box-shadow:0 6px 20px rgba(7,24,34,.28)}
+.fab svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.aipanel{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:31;width:min(390px,calc(100vw - 32px));height:min(560px,calc(100% - 110px));background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 40px rgba(7,24,34,.32);display:flex;flex-direction:column;overflow:hidden}
+.aipanel[hidden]{display:none}
+.aihead{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.aihead strong{font:700 1rem/1.1 var(--f-display)}
+.aihead small{display:block;font-size:.72rem;color:var(--muted);margin-top:3px}
+.aihead button{background:transparent;border:1px solid var(--line);border-radius:8px;width:32px;height:32px;font-size:1.1rem;line-height:1}
+.aimsgs{flex:1;min-height:0;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:92%;padding:9px 12px;border-radius:12px;font-size:.88rem;line-height:1.5;overflow-wrap:anywhere}
+.msg.bot{background:var(--bg);align-self:flex-start;border-top-left-radius:4px}
+.msg.user{background:var(--water);color:var(--onfill);align-self:flex-end;border-top-right-radius:4px}
+.msg a{color:var(--water)}
+.msg ul{margin:6px 0 0;padding-left:18px}
+.aichips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 14px;border-top:1px solid var(--line);max-height:32%;overflow-y:auto}
+.aichips button{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:.78rem}
+.aichips button:hover{border-color:var(--water)}
+.aiform{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--line)}
+.aiform input{flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:9px 11px;font:inherit;font-size:.9rem}
+.aiform button{background:var(--water);color:var(--onfill);border:0;border-radius:8px;padding:0 14px;font-weight:600}
+.aifoot{font-size:.7rem;color:var(--muted);padding:0 14px 10px;line-height:1.35}
+@media (max-width:760px){
+  .mapbox{grid-template-columns:minmax(0,1fr)}
+  .mapcol{max-width:300px}
+  .byline{max-width:100%}
+  .aipanel{right:8px;width:calc(100vw - 16px);bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion:reduce){.mapcol .mk circle{transition:none}}
 </style>
 
 <div class="wrap">
 
   <section class="hero">
+    <span class="eyebrow byl">Desarrollado por Christian Euscátegui. Meteorólogo Consultor en Variabilidad Climática y Cambio Climático</span>
     <div class="hero-main">
       <span class="eyebrow">XM · IDEAM · Sistema Interconectado Nacional</span>
       <h1>Cuánta agua queda para generar energía</h1>
@@ -256,6 +327,26 @@ footer{font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap
     <div class="band l3" id="bandMsg" aria-live="polite"></div>
     <div class="kpis" id="kpis" aria-live="polite"></div>
     <div class="warnbox" id="thrMsg"></div>
+    <div class="mapbox">
+      <div class="mapcol">
+        <svg id="mapsvg" viewBox="0 0 326 449" role="group" aria-label="Mapa esquemático de Colombia con las seis regiones hidrológicas">
+          <path class="land" d="M462.4,206.4L465.6,213.2L456.8,222.3L430.0,231.3L412.7,235.0L405.8,240.7L386.7,234.7L368.9,231.6L364.4,233.9L375.2,240.1L374.2,256.2L377.5,271.3L397.8,273.3L399.1,278.4L382.0,285.2L379.3,295.4L369.3,299.3L351.5,304.9L346.9,312.3L328.2,313.8L315.0,301.1L307.6,277.2L301.2,268.8L292.6,263.5L304.7,251.6L303.9,246.2L297.1,239.1L292.3,223.1L294.2,205.9L299.5,197.8L303.8,184.9L295.3,180.8L281.6,183.5L264.3,182.2L254.7,184.8L237.7,164.2L223.8,161.1L193.0,163.4L187.3,155.0L181.3,153.0L180.4,148.0L183.3,139.1L181.5,129.5L176.1,124.2L173.1,113.2L160.7,111.5L167.3,97.5L170.3,80.4L177.3,71.5L186.5,64.6L192.6,52.6L208.0,48.6L207.3,54.2L193.2,57.0L201.1,67.9L200.8,80.5L190.2,94.4L199.3,113.5L209.7,111.9L215.0,94.6L207.6,86.1L206.4,68.0L236.3,58.2L233.0,46.9L241.4,39.3L250.0,56.2L266.8,56.5L282.4,69.9L283.4,77.9L304.9,78.1L330.5,75.6L344.3,86.4L362.7,89.4L376.1,81.9L376.4,75.8L406.1,74.4L434.9,74.0L414.5,81.1L422.7,92.5L441.9,94.2L460.0,106.1L463.9,125.3L476.4,124.7L485.8,130.4L466.8,144.5L464.7,153.2L472.9,162.2L467.0,166.6L452.2,170.5L452.6,181.6L446.1,188.2L462.4,206.4ZM111.1,334.8L114.4,353.1L106.9,368.7L80.7,393.8L51.9,403.3L37.2,424.2L32.6,440.3L19.1,450.2L9.0,438.1L-0.7,435.5L-10.6,437.4L-11.3,428.6L-4.4,422.9L-7.3,412.9L5.5,395.0L0.3,384.5L-8.9,395.7L-23.2,385.1L-18.4,378.3L-22.4,356.6L-14.0,353.0L-9.5,338.0L-0.5,322.5L-2.2,312.7L11.0,307.6L27.4,298.0L51.5,311.8L55.9,311.4L61.8,321.7L82.1,325.1L88.9,321.2L100.8,329.2L111.1,334.8ZM242.6,434.4L220.9,433.2L217.7,436.8L198.1,441.5L170.6,457.8L168.9,469.0L162.7,477.3L165.2,490.3L150.6,497.2L150.6,507.4L144.3,511.8L154.3,533.4L167.7,548.0L162.6,558.3L178.5,559.7L187.5,572.5L208.7,573.1L228.4,559.0L226.8,595.4L237.7,598.2L251.3,594.0L272.0,632.7L266.8,640.8L265.2,678.1L255.9,690.1L260.1,699.0L254.7,707.1L264.9,727.2L249.8,753.1L243.4,765.4L231.1,771.6L207.0,757.8L204.9,747.9L157.3,723.8L114.3,697.6L95.8,682.8L85.8,662.9L89.8,656.0L69.4,624.6L45.7,580.3L23.1,532.5L13.3,521.5L5.7,503.9L-12.9,488.2L-30.0,478.5L-22.2,467.8L-33.8,444.9L-26.4,428.1L-7.3,412.9L-4.4,422.9L-11.3,428.6L-10.6,437.4L-0.7,435.5L9.0,438.1L19.1,450.2L32.6,440.3L37.2,424.2L51.9,403.3L80.7,393.8L106.9,368.7L114.4,353.1L111.1,334.8L117.5,332.6L133.4,343.9L141.0,355.3L152.2,361.4L166.3,386.6L184.2,389.6L197.4,383.3L206.1,387.4L220.5,385.4L238.9,396.6L223.4,421.0L230.6,421.6L242.6,434.4ZM639.1,1141.6L632.4,1128.1L643.0,1116.7L629.1,1100.4L610.3,1087.1L585.6,1071.7L576.7,1072.4L552.6,1053.8L537.0,1056.4L569.0,1023.7L596.1,1000.4L632.4,977.4L632.9,958.2L620.9,944.3L609.0,949.0L613.7,935.1L616.9,920.9L616.9,907.7L608.3,903.3L599.3,907.2L590.4,906.2L587.6,896.9L585.3,874.9L580.8,867.8L564.7,861.3L554.8,866.0L529.5,861.4L531.1,828.8L524.0,815.4L531.5,810.5L529.2,796.8L535.8,786.3L540.0,767.4L534.3,752.5L521.3,745.7L518.7,736.3L522.3,722.4L476.2,721.4L467.0,693.4L474.0,693.0L473.7,682.7L468.9,675.7L467.9,661.8L454.0,654.7L438.9,654.9L428.9,648.0L412.7,643.2L403.3,634.3L376.4,630.3L350.3,608.8L352.3,592.7L349.4,583.5L351.9,565.5L320.5,569.6L307.8,578.6L286.8,588.3L281.5,595.6L269.1,596.1L251.3,594.0L237.7,598.2L226.8,595.4L228.4,559.0L208.7,573.1L187.5,572.5L178.5,559.7L162.6,558.3L167.7,548.0L154.3,533.4L144.3,511.8L150.6,507.4L150.6,497.2L165.2,490.3L162.7,477.3L168.9,469.0L170.6,457.8L198.1,441.5L217.7,436.8L220.9,433.2L242.6,434.4L253.4,368.6L253.9,358.2L250.2,344.4L239.5,335.7L239.6,318.2L253.1,314.2L257.9,316.7L258.7,307.5L244.7,305.1L244.4,290.0L291.1,290.6L299.1,282.3L305.7,289.9L310.5,304.1L315.0,301.1L328.2,313.8L346.9,312.3L351.5,304.9L369.3,299.3L379.3,295.4L382.0,285.2L399.1,278.4L397.8,273.3L377.5,271.3L374.2,256.2L375.2,240.1L364.4,233.9L368.9,231.6L386.7,234.7L405.8,240.7L412.7,235.0L430.0,231.3L456.8,222.3L465.6,213.2L462.4,206.4L474.9,205.3L480.4,210.9L477.3,221.4L485.6,225.0L491.1,236.2L484.4,244.7L480.6,265.1L486.7,277.2L488.5,288.3L503.2,299.6L515.1,300.8L517.7,296.0L525.3,295.0L536.2,290.8L543.9,284.4L557.2,286.5L563.0,285.6L576.1,287.6L578.2,282.7L574.3,277.9L576.7,270.9L586.4,273.1L597.7,270.6L611.4,275.7L621.9,280.7L629.3,274.2L634.7,275.2L637.9,281.9L649.4,280.2L658.7,271.1L666.0,253.4L680.2,231.5L688.4,230.3L694.4,243.6L707.8,285.6L720.6,289.5L721.2,306.1L703.3,325.9L710.7,333.1L753.1,336.8L754.0,360.9L772.2,345.2L802.4,353.8L842.3,368.4L853.9,382.5L850.1,395.8L878.0,388.4L924.6,401.1L960.5,400.2L996.0,420.0L1026.7,446.9L1045.1,453.8L1065.6,454.8L1074.4,462.4L1086.4,507.4L1076.9,547.1L1064.7,562.8L1030.9,596.2L1015.6,623.3L997.8,644.1L991.8,644.6L985.1,662.3L986.8,707.2L977.6,760.0L970.0,769.5L965.7,801.6L941.4,832.9L937.3,857.7L917.9,868.1L912.3,882.5L886.2,882.4L848.4,891.6L831.6,902.3L804.7,909.4L776.4,928.4L756.1,952.2L752.6,970.2L756.6,983.4L752.2,1007.7L746.7,1019.4L729.9,1032.6L703.3,1074.8L682.2,1093.9L665.8,1105.1L654.9,1127.9L639.1,1141.6ZM63.5,123.1L60.6,126.6L66.1,140.8L61.6,147.9L54.0,146.2L50.8,157.8L42.8,150.9L37.7,138.0L43.6,131.5L37.5,129.9L33.0,121.9L21.1,115.3L10.6,116.8L5.7,125.2L-3.9,131.2L-9.2,132.0L-11.5,137.0L-0.1,150.1L-6.6,153.1L-10.1,156.7L-21.3,157.9L-25.4,143.6L-28.6,147.7L-36.5,146.2L-41.3,136.6L-51.2,135.0L-57.4,132.2L-67.7,132.2L-68.4,137.4L-71.2,133.8L-68.0,124.2L-68.8,119.8L-65.3,117.0L-70.3,113.4L-70.4,103.7L-61.1,101.6L-52.5,110.2L-53.0,115.3L-43.4,116.4L-41.2,114.4L-34.5,120.3L-22.8,118.6L-12.5,112.5L2.0,107.7L10.2,100.5L23.5,101.9L22.6,104.3L36.0,105.1L46.7,109.3L54.5,116.5L63.5,123.1Z"/>
+          <path class="col" id="colpath" d="M208.4,46.5L203.2,48.6L193.0,51.2L186.1,62.5L181.3,64.5L175.4,71.2L171.1,79.4L167.8,96.2L159.2,110.5L159.9,111.2L163.3,110.5L166.6,109.0L167.7,109.4L169.0,111.9L172.8,112.6L176.0,124.2L182.0,130.0L183.3,135.5L183.4,137.1L181.3,140.0L180.7,150.6L182.5,153.2L187.0,154.3L190.0,160.9L191.9,162.4L194.6,163.4L201.1,162.4L212.9,163.5L215.7,163.3L222.3,161.0L224.3,161.2L230.7,163.9L236.9,164.3L253.7,184.2L255.4,183.7L257.6,184.8L261.8,182.8L265.5,182.4L270.3,183.4L276.7,183.4L289.5,181.4L291.4,180.2L298.4,181.4L300.5,182.9L301.5,186.6L300.6,188.9L298.2,191.2L296.8,194.2L296.6,197.8L295.4,200.4L293.1,202.2L292.2,204.7L292.7,208.0L291.5,223.0L292.4,224.3L293.2,230.4L296.1,238.4L297.5,240.7L300.0,242.6L304.5,249.2L303.5,251.4L292.0,261.8L291.4,264.1L293.6,263.2L297.2,264.1L298.4,266.6L306.9,273.9L306.9,276.6L309.3,282.0L308.8,283.2L314.8,298.6L315.0,301.9L310.0,302.8L309.9,292.4L303.6,281.1L302.4,280.4L301.0,280.3L298.6,281.4L292.4,288.2L289.6,289.2L287.2,288.3L284.9,284.3L283.4,283.5L281.9,286.9L283.8,289.9L256.3,289.9L251.0,288.6L243.6,290.2L243.5,305.8L244.8,305.3L253.4,306.3L256.5,306.0L257.8,306.8L260.1,310.5L259.8,314.1L260.3,315.8L257.2,316.1L252.7,313.7L244.6,316.6L238.7,317.3L238.3,334.5L241.9,338.8L248.8,343.4L249.8,346.6L249.3,349.5L251.0,353.2L253.2,355.2L253.2,357.4L254.4,359.9L240.8,432.8L236.0,428.4L234.3,424.4L231.9,422.8L227.3,424.0L222.4,422.0L238.3,397.2L237.7,395.0L234.1,393.8L232.9,392.5L226.2,389.2L224.4,388.9L223.0,387.4L216.7,384.2L213.3,385.1L211.3,386.7L206.5,387.2L202.6,384.6L197.9,382.8L196.7,383.2L192.4,387.1L190.7,387.0L186.8,388.8L182.5,389.5L177.0,387.6L172.5,388.9L169.4,388.6L168.3,387.3L164.3,385.9L163.9,384.2L165.0,381.1L163.3,375.1L162.6,374.1L159.6,374.0L156.1,371.8L155.4,370.5L156.2,368.1L155.5,366.0L152.0,361.2L147.3,359.9L142.7,355.9L138.1,354.5L136.0,351.6L136.1,350.6L134.0,345.1L129.2,340.1L125.8,338.4L124.7,336.0L121.4,335.7L116.7,332.4L114.6,332.2L113.1,333.8L108.8,332.1L105.2,329.7L101.4,329.1L98.9,327.6L94.4,322.9L89.5,320.6L88.5,320.4L86.7,321.5L85.8,324.9L84.1,325.6L78.5,324.7L77.5,325.4L76.1,325.3L69.3,322.7L65.0,322.6L62.5,321.7L61.8,321.0L60.8,315.9L56.5,313.9L55.2,311.1L52.1,311.4L47.1,309.6L40.5,306.1L35.7,302.4L31.7,300.4L27.3,296.3L26.7,294.6L23.4,292.2L25.0,289.1L29.0,286.8L34.2,288.6L34.8,285.0L32.9,281.9L33.8,274.6L35.2,273.0L38.0,271.6L39.8,272.1L40.9,270.9L45.1,271.5L46.4,271.0L49.6,268.1L51.0,265.8L52.5,266.0L53.4,264.3L55.9,262.1L55.3,258.2L58.6,257.4L62.0,251.0L63.5,250.8L64.2,247.8L70.1,237.3L68.0,238.5L65.7,237.8L66.1,234.2L65.4,233.8L63.4,236.5L61.7,233.7L62.2,229.3L59.5,230.1L59.7,229.1L63.5,225.6L65.1,217.9L63.9,215.1L63.0,203.4L62.3,201.2L59.1,198.3L64.2,195.0L66.1,192.5L63.7,187.3L60.7,182.9L60.6,180.4L62.4,180.6L63.1,173.4L61.5,170.6L59.4,170.6L52.7,159.9L50.4,157.7L52.1,152.6L54.1,150.3L53.7,146.4L55.1,146.6L57.9,150.2L59.1,149.6L63.5,146.3L63.7,143.1L67.3,139.9L62.3,128.9L60.5,127.2L62.6,123.7L63.7,123.9L65.7,127.4L68.9,129.6L73.6,135.7L75.6,137.0L74.1,138.4L73.8,139.9L75.2,141.2L77.1,140.8L78.1,139.2L77.5,131.7L76.3,128.0L73.9,125.4L74.7,124.3L79.4,122.5L89.4,115.4L92.8,108.8L95.3,106.4L98.3,104.9L101.8,105.2L104.7,104.4L105.5,102.3L103.6,97.7L105.8,91.4L105.7,88.2L107.1,86.3L106.6,85.5L103.0,87.7L106.7,83.3L109.3,76.5L123.8,64.6L133.1,67.5L136.0,67.3L132.2,68.8L131.6,70.5L132.9,72.3L134.4,72.8L135.6,71.7L138.7,64.7L139.2,60.8L140.5,59.5L142.6,59.0L151.8,60.7L160.5,60.1L174.7,50.1L185.4,45.9L188.1,41.7L188.7,38.7L190.6,37.5L192.7,37.5L193.9,35.8L198.9,33.1L204.1,32.8L209.7,35.2L212.2,39.2L212.7,42.1L208.4,46.5ZM45.2,270.2L44.6,270.7L43.4,269.8L43.0,268.6L43.7,267.7L44.7,268.0L45.2,270.2Z"/>
+          <text class="sea" x="16.800000000000068" y="36.0">Mar Caribe</text><text class="sea" x="10" y="307.20000000000005">Océano</text><text class="sea" x="10" y="317.20000000000005">Pacífico</text><text class="nbl" x="297.60000000000014" y="158.4" text-anchor="end">Venezuela</text><text class="nbl" x="307.19999999999993" y="403.20000000000005" text-anchor="end">Brasil</text><text class="nbl" x="120.0" y="438.0" text-anchor="middle">Perú</text><text class="nbl" x="57.600000000000136" y="369.6" text-anchor="middle">Ecuador</text><text class="nbl" x="9.600000000000136" y="129.60000000000002" text-anchor="start">Panamá</text>
+          <defs><clipPath id="colclip"><use href="#colpath"/></clipPath></defs>
+          <g id="mapZ" clip-path="url(#colclip)"></g>
+          <g id="mapMk"></g>
+        </svg>
+      </div>
+      <div class="maptxt">
+        <div class="maptog"><div class="seg" role="group" aria-label="Qué mostrar en el mapa"><button type="button" id="mmNivel" aria-pressed="true">Nivel</button><button type="button" id="mmZonas" aria-pressed="false">Zonas aproximadas</button><button type="button" id="mmPeso" aria-pressed="false">Peso energético</button></div></div>
+        <h3 id="mapH">¿Dónde están los embalses?</h3>
+        <p id="mapP"></p>
+        <ul class="maplist" id="mapList"></ul>
+        <p class="mapnote"><b>¿Y quién surte a las otras regiones?</b> El mapa muestra dónde está el agua, no a quién abastece. Colombia tiene una red eléctrica nacional (el SIN): la energía se genera con agua, plantas térmicas, sol y viento, y se reparte por todo el país. Además, algunas zonas apartadas están fuera de esa red y generan su propia energía con plantas locales.</p>
+        <p class="hint" id="mapHint">Mapa esquemático: la posición de cada círculo es aproximada y no marca la ubicación exacta de cada embalse.</p>
+      </div>
+    </div>
     <p class="hint">Toca cualquier fila para abrir su detalle debajo de la lista.</p>
     <div class="axis" aria-hidden="true"><span></span><div><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div><span></span></div>
     <div class="rows" id="rows"></div>
@@ -297,12 +388,31 @@ footer{font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap
   </section>
 
   <footer>
-    <p><strong>Datos.</strong> Volumen útil diario y capacidad útil diaria de energía por embalse, tomados de la API pública de XM el 10 de octubre de 2026. Cada región es el volumen sumado dividido por la capacidad sumada de sus embalses, según la región hidrológica que XM asigna a cada uno. El nacional suma los 24 embalses. En el corte de 2024 la respuesta de XM no incluye a Miraflores, así que ese año no lo suma. Octubre de 2023, 2024 y 2025 usa el corte del 31 de octubre; 2026 usa el del 8 de octubre, así que aún no incluye el resto del mes. El nacional de 2025 calculado aquí (83.75%) difiere en 0.09 pp del 83.66% publicado por Portafolio.</p>
+    <p><strong>Desarrollado por Christian Euscátegui.</strong> Consultor en Variabilidad Climática y Cambio Climático.</p>
+    <p><strong>Datos.</strong> Volumen útil diario y capacidad útil diaria de energía por embalse, tomados de la API pública de XM el 10 de octubre de 2026. Cada región es el volumen sumado dividido por la capacidad sumada de sus embalses, según la región hidrológica que XM asigna a cada uno. El nacional suma los 24 embalses. En el corte de 2024 la respuesta de XM no incluye a Miraflores, así que ese año no lo suma. Algunos embalses superan el 100% de su capacidad útil en los datos de XM (por ejemplo Playas en 2023 y 2025); se muestran tal cual. Octubre de 2023, 2024 y 2025 usa el corte del 31 de octubre; 2026 usa el del 8 de octubre, así que aún no incluye el resto del mes. El nacional de 2025 calculado aquí (83.75%) difiere en 0.09 pp del 83.66% publicado por Portafolio.</p>
     <p><strong>Referencias normativas.</strong> El criterio del 70% proviene del esquema de la senda de referencia de la CREG (Resolución CREG 026 de 2014, modificada por las Resoluciones 209 de 2020 y 210 de 2021), según el <a href="https://gestornormativo.creg.gov.co/gestor/entorno/docs/pdf/doc_creg_0901_31_2023.pdf" target="_blank" rel="noopener">Documento CREG 901 031 de 2023</a>. Su vigencia en 2026 no está confirmada aquí. La meta del 80% ante El Niño la reporta <a href="https://www.larepublica.co/economia/nivel-de-embalses-esta-en-79-24-0-43-pps-debajo-de-la-senda-de-referencia-de-la-creg-4481898" target="_blank" rel="noopener">La República</a> citando a XM (15 de septiembre de 2026). Ambas son aproximaciones didácticas: la operación real usa la senda diaria del SIN y puede variar.</p>
     <p><strong>Comparto con base en fuentes:</strong> <a href="https://www.xm.com.co" target="_blank" rel="noopener">XM S.A. E.S.P.</a> para volumen útil y reservas del SIN, el <a href="https://www.ideam.gov.co" target="_blank" rel="noopener">IDEAM</a> para el contexto hidrometeorológico y los aportes hídricos, y la <a href="https://www.creg.gov.co" target="_blank" rel="noopener">CREG</a> para la normativa. Material con fines técnicos y educativos.</p>
   </footer>
 </div>
 
+
+<button type="button" class="fab" id="aiBtn" aria-expanded="false" aria-controls="aiPanel">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.3A8 8 0 1 1 21 12z"/></svg>
+  Pregúntale al tablero
+</button>
+<section class="aipanel" id="aiPanel" role="dialog" aria-label="Asistente del tablero" hidden>
+  <div class="aihead">
+    <div><strong>Pregúntale al tablero</strong><small>Responde solo con los datos de esta página</small></div>
+    <button type="button" id="aiClose" aria-label="Cerrar asistente">&times;</button>
+  </div>
+  <div class="aimsgs" id="aiMsgs" aria-live="polite"></div>
+  <div class="aichips" id="aiChips"></div>
+  <form class="aiform" id="aiForm" autocomplete="off">
+    <input id="aiInput" type="text" placeholder="Escribe tu pregunta…" aria-label="Escribe tu pregunta" maxlength="200">
+    <button type="submit">Enviar</button>
+  </form>
+  <p class="aifoot">Asistente por reglas, sin inteligencia artificial: solo usa las cifras del tablero. No pronostica ni evalúa riesgos. Referencias aproximadas, no la operación real.</p>
+</section>
 <script>
 var YEARS=[2023,2024,2025,2026];
 var NAT={"2023": 72.79, "2024": 56.78, "2025": 83.75, "2026": 74.85};
@@ -375,7 +485,7 @@ function renderRows(){
   else if(fell.length>=rose.length)title=fell.length+" de 6 regiones bajaron frente a oct "+base;
   else title=rose.length+" de 6 regiones subieron frente a oct "+base;
   $("regTitle").textContent=title;
-  renderDetail();
+  renderDetail();renderMap();
 }
 function renderDetail(){
   var r=regions.filter(function(x){return x.n===sel})[0];if(!r)return;
@@ -453,6 +563,234 @@ $("quiz").addEventListener("click",function(e){
   $("fb").textContent=ok?"Correcto. "+worst.n+" cayó "+Math.abs(dl(worst)).toFixed(1)+" pp, de "+f1(A(worst))+"% a "+f1(B(worst))+"%.":
     "No. Mira el cambio en rojo de cada fila: la mayor caída fue la de "+worst.n+" ("+sgn(dl(worst))+").";
 });
+
+/* ---------- Mapa ---------- */
+var REGPOS={Oriente:[4.8,-73.5],Antioquia:[6.6,-75.2],Caldas:[5.55,-74.9],Caribe:[8.0,-76.2],Centro:[4.2,-74.6],Valle:[3.5,-76.7]};
+var REGLAB={Oriente:[16,"start"],Antioquia:[-16,"end"],Caldas:[-16,"end"],Caribe:[16,"start"],Centro:[-16,"end"],Valle:[-16,"end"]};
+var CAP={Centro:6345,Antioquia:6286,Oriente:3843,Valle:784,Caldas:254,Caribe:141};
+var CAPT=0;for(var k in CAP)CAPT+=CAP[k];
+var ZONAS={
+ Antioquia:[[7.7,-76.2],[7.7,-74.6],[6.4,-74.4],[5.85,-74.9],[5.85,-75.7],[6.3,-76.2]],
+ Caldas:[[5.85,-75.2],[5.85,-74.6],[5.3,-74.6],[5.3,-75.2]],
+ Caribe:[[9.6,-77.0],[9.6,-75.3],[7.7,-75.3],[7.7,-77.0]],
+ Centro:[[7.2,-73.9],[7.2,-73.0],[5.6,-73.3],[4.9,-73.9],[4.0,-74.1],[2.0,-75.0],[2.0,-76.0],[3.8,-75.6],[4.6,-74.8],[5.3,-74.5],[6.3,-74.3]],
+ Oriente:[[5.5,-73.4],[5.5,-72.6],[4.0,-72.6],[4.0,-73.7],[4.8,-73.8]],
+ Valle:[[4.6,-77.3],[4.6,-76.2],[2.5,-76.2],[2.5,-77.3]]
+};
+var mapMode="nivel";
+var MAPTXT={
+ nivel:["¿Dónde están los embalses?","Colombia está en el noroeste de Sudamérica, con costa en el mar Caribe y en el océano Pacífico. XM agrupa sus embalses en seis regiones hidrológicas. Cada círculo es una región y muestra su nivel de octubre de 2026; es rojo si queda bajo tu umbral. Toca uno para abrir su detalle.","Mapa esquemático: la posición de cada círculo es aproximada y no marca la ubicación exacta de cada embalse."],
+ zonas:["¿Qué zona ocupa cada región?","Cada área sombreada es la zona aproximada donde están los embalses de una región hidrológica de XM. Es roja si la región queda bajo tu umbral. Muestra dónde está el agua, no a quién abastece: el SIN es una sola red nacional y XM despacha la generación en todo el país.","Zonas dibujadas a mano como referencia visual; no son límites oficiales."],
+ peso:["¿Cuánta energía puede almacenar cada región?","El tamaño del círculo es la capacidad útil de almacenamiento de la región, en gigavatios-hora (GWh), con datos de XM al 8 de octubre de 2026. Sirve para ver qué tanto pesa cada región en el total: un nivel bajo en una región grande importa más que en una pequeña. No indica a quién abastece cada una.","Capacidad útil de los embalses de cada región según XM (CapaUtilDiarEner); GWh redondeados. Posiciones aproximadas."]
+};
+function fmtn(n){return Math.round(n).toLocaleString("es-CO")}
+function renderMap(){
+  var T=thr(),g="",li="",z="",m=mapMode;
+  var mc=document.querySelector(".mapcol");mc.classList.toggle("m-peso",m==="peso");
+  regions.slice().sort(function(a,b){return CAP[b.n]-CAP[a.n]}).forEach(function(r){
+    var low=B(r)<T;
+    if(m==="zonas"){
+      var pts=ZONAS[r.n].map(function(p){return ((p[1]+80)*24).toFixed(1)+","+((13.8-p[0])*24).toFixed(1)}).join(" ");
+      z+='<polygon class="zn'+(low?" low":"")+(sel===r.n?" sel":"")+'" data-r="'+r.n+'" points="'+pts+'"><title>'+r.n+'</title></polygon>';
+    }
+  });
+  regions.slice().sort(function(a,b){return CAP[b.n]-CAP[a.n]}).forEach(function(r){
+    var p=REGPOS[r.n],x=(p[1]+80)*24,y=(13.8-p[0])*24,low=B(r)<T,lab=REGLAB[r.n];
+    var names=res.filter(function(e){return e.r===r.n}).map(function(e){return e.n});
+    var rad=m==="peso"?Math.max(4,26*Math.sqrt(CAP[r.n]/6345)):12;
+    var pct=(100*CAP[r.n]/CAPT);
+    var dy=m==="peso"?(r.n==="Valle"?12:r.n==="Centro"?-7:0):0;var off=m==="peso"?lab[0]*0+(lab[0]>0?rad+4:-rad-4):lab[0];
+    g+='<g class="mk'+(low?" low":"")+(sel===r.n?" sel":"")+'" data-r="'+r.n+'" tabindex="0" role="button" aria-label="'+r.n+': '+f1(B(r))+'%'+(low?', bajo el umbral':'')+(m==="peso"?', capacidad '+fmtn(CAP[r.n])+' GWh':'')+'">'+
+      '<title>'+r.n+': '+names.join(", ")+'</title>'+
+      '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+rad.toFixed(1)+'"/>'+
+      (m==="peso"?'':'<text class="pc" x="'+x.toFixed(1)+'" y="'+(y+3.1).toFixed(1)+'" text-anchor="middle">'+Math.round(B(r))+'%</text>')+
+      '<text class="nm" x="'+(x+off).toFixed(1)+'" y="'+(y+dy+(m==="peso"?-0.5:3.2)).toFixed(1)+'" text-anchor="'+lab[1]+'">'+r.n+'</text>'+
+      (m==="peso"?'<text class="cp" x="'+(x+off).toFixed(1)+'" y="'+(y+dy+9).toFixed(1)+'" text-anchor="'+lab[1]+'">'+fmtn(CAP[r.n])+' GWh</text>':'')+'</g>';
+  });
+  regions.forEach(function(r){
+    var names=res.filter(function(e){return e.r===r.n}).map(function(e){return e.n});
+    li+='<li><b>'+r.n+'</b><span><span class="mono">'+(m==="peso"?fmtn(CAP[r.n])+' GWh · '+(100*CAP[r.n]/CAPT).toFixed(1)+'%':f1(B(r))+'%')+'</span> <em>'+names.join(", ")+'</em></span></li>';
+  });
+  $("mapZ").innerHTML=z;
+  $("mapMk").innerHTML=g;
+  $("mapList").innerHTML=li;
+  $("mapH").textContent=MAPTXT[m][0];$("mapP").textContent=MAPTXT[m][1];$("mapHint").textContent=MAPTXT[m][2];
+  [["nivel","mmNivel"],["zonas","mmZonas"],["peso","mmPeso"]].forEach(function(a){$(a[1]).setAttribute("aria-pressed",String(m===a[0]))});
+}
+function setMapMode(m){mapMode=m;renderMap();}
+$("mmNivel").addEventListener("click",function(){setMapMode("nivel")});
+$("mmZonas").addEventListener("click",function(){setMapMode("zonas")});
+$("mmPeso").addEventListener("click",function(){setMapMode("peso")});
+function pickRegion(n){sel=n;renderRows();}
+$("mapsvg").addEventListener("click",function(e){var m=e.target.closest(".mk,.zn");if(m)pickRegion(m.getAttribute("data-r"));});
+$("mapsvg").addEventListener("keydown",function(e){
+  if(e.key!=="Enter"&&e.key!==" ")return;
+  var m=e.target.closest&&e.target.closest(".mk");if(m){e.preventDefault();pickRegion(m.getAttribute("data-r"));}
+});
+
+/* ---------- Asistente por reglas ---------- */
+function norm(s){return String(s).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[¿?¡!.,;:()"]/g," ").replace(/\s+/g," ").trim()}
+function wb(q,key){return new RegExp("(^| )"+key.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"( |$)").test(q)}
+function wbr(q,key){return q.replace(new RegExp("(^| )"+key.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"( |$)")," ")}
+var EMBK=res.map(function(x){return{key:norm(x.n).replace(/^el /,"").replace(/ i$/,""),x:x}}).sort(function(a,b){return b.key.length-a.key.length});
+function entidades(q){
+  var regs=[],embs=[],rest=q;
+  EMBK.forEach(function(e){if(wb(rest,e.key)){embs.push(e.x);rest=wbr(rest,e.key)}});
+  if(wb(rest,"bogota")&&!embs.some(function(x){return x.n==="Agregado Bogotá"})){embs.push(res.filter(function(x){return x.n==="Agregado Bogotá"})[0]);rest=wbr(rest,"bogota")}
+  regions.forEach(function(r){if(wb(rest,norm(r.n)))regs.push(r)});
+  return{regs:regs,embs:embs};
+}
+function dY(o,y){var a=o.v[y],b=o.v[2026];return a==null||b==null?null:b-a}
+function yrLine(o){return YEARS.map(function(y){return y+": "+f1(o.v[y])+"%"}).join(" · ")}
+function B_(t){return "<strong>"+t+"</strong>"}
+function ul(a){return "<ul>"+a.map(function(x){return "<li>"+x+"</li>"}).join("")+"</ul>"}
+var DESCARGO="Referencia aproximada, no la operación real.";
+var AI_CHIPS=["¿Cómo va el nivel nacional?","¿Qué región tiene el menor nivel?","¿Cuál bajó más?","¿Cómo está Caldas?","¿Qué embalse está más bajo?","¿Qué significa pp?","¿Qué es el criterio CREG del 70%?","¿Dónde queda Chuza?","¿Quién abastece a las otras regiones?"];
+
+function cardRegion(r,cy){
+  var T=thr(),d=dY(r,cy),m=B(r)-T,emb=res.filter(function(x){return x.r===r.n});
+  return B_(r.n)+" · hoy "+f1(B(r))+"%<br>"+ul([
+    "Frente a oct "+cy+": "+f1(r.v[cy])+"% → "+f1(B(r))+"% ("+sgn(d)+")",
+    "Frente al umbral de "+T+"%: "+Math.abs(m).toFixed(1)+" pp "+(m<0?"por debajo":"por encima"),
+    "Cuatro octubres: "+yrLine(r),
+    "Embalses de la región: "+emb.map(function(x){return x.n+" "+f1(x.v[2026])+"%"}).join(", ")
+  ]);
+}
+function cardEmb(x,cy){
+  var d=dY(x,cy),b=x.v[2026];
+  var est=b>=80?"sobre el 80% (meta de XM)":b>=70?"entre el 70% y el 80%":"bajo el 70%";
+  return B_(x.n)+" ("+x.r+") · hoy "+f1(b)+"%<br>"+ul([
+    "Frente a oct "+cy+": "+f1(x.v[cy])+"% → "+f1(b)+"% ("+sgn(d)+")",
+    "Cuatro octubres: "+yrLine(x),
+    "Hoy está "+est+"."
+  ]);
+}
+function topN(arr,keyf,n,asc){return arr.slice().sort(function(a,b){return asc?keyf(a)-keyf(b):keyf(b)-keyf(a)}).slice(0,n)}
+
+function responder(raw){
+  var q=norm(raw);
+  if(!q)return null;
+  var T=thr(),ent=entidades(q);
+  var yrs=(q.match(/\b(2023|2024|2025|2026)\b/g)||[]).map(Number);
+  var cy=yrs.filter(function(y){return y!==2026})[0]||base;
+  var isEmb=/embalse|represa|presa/.test(q)&&!ent.regs.length;
+
+  if(/^(hola|buenas|buenos dias|buenas tardes|buenas noches|hey|saludos)( |$)/.test(q)&&q.split(" ").length<=4)
+    return "¡Hola! Puedo contarte cómo van las regiones y los embalses, comparar octubres y explicar los términos del tablero. Elige una pregunta o escribe la tuya.";
+  if(/(ayuda|que puedo preguntar|que sabes|que puedes|como funciona|como se usa|como uso|instrucciones)/.test(q))
+    return "Puedo responder sobre:"+ul(["El nivel nacional y por región, y cuál subió o bajó más","Un embalse o una región en particular (por ejemplo, «cómo está Guavio»)","Comparaciones con 2023, 2024 o 2025","Qué significan pp, volumen útil, umbral, criterio CREG y meta de XM"])+"No pronostico lluvias ni precios, ni evalúo riesgos.";
+  if(/(quien|autor|desarroll|creador|hizo)/.test(q)&&!/(surte|abastec|provee|le da)/.test(q)&&!ent.regs.length&&!ent.embs.length)
+    return "Este tablero fue desarrollado por "+B_("Christian Euscátegui")+", consultor en Variabilidad Climática y Cambio Climático.";
+
+  if(/(racion|apagon|apagar|corte de (luz|energia)|precio|tarifa|factura|bolsa de|costo|pronostic|predic|futuro|va a (llover|subir|bajar)|llover|lluvia|clima de|sequia|riesgo|peligro|crisis|recomend|que debo|que hago|ahorrar)/.test(q))
+    return "Eso queda fuera de lo que muestra este tablero: no pronostica lluvias ni precios, ni evalúa riesgo de racionamiento o abastecimiento.<br>Lo que sí puedo decirte: el nivel nacional hoy es "+B_(f2(NAT[2026])+"%")+" y "+regions.filter(function(r){return B(r)<T}).length+" de 6 regiones están por debajo de "+T+"%.<br>Para pronósticos y estado de la operación consulta <a href=\"https://www.xm.com.co\" target=\"_blank\" rel=\"noopener\">XM</a>, el <a href=\"https://www.ideam.gov.co\" target=\"_blank\" rel=\"noopener\">IDEAM</a> y el Ministerio de Minas y Energía.";
+
+  if(/(que es|que son|que significa|significado|explica|definicion|para que sirve)/.test(q)||/^(pp|umbral|creg|senda)/.test(q)){
+    if(/(\bpp\b|punto porcentual|puntos porcentuales)/.test(q))return B_("pp")+" significa puntos porcentuales: la resta entre dos porcentajes. Ejemplo del tablero: el nacional pasó de "+f2(NAT[2025])+"% (oct 2025) a "+f2(NAT[2026])+"% (oct 2026), una caída de "+Math.abs(NAT[2026]-NAT[2025]).toFixed(1)+" pp.";
+    if(/(volumen util|reserva|capacidad util)/.test(q))return B_("Volumen útil")+": agua almacenada que se puede turbinar para generar electricidad, como porcentaje de la capacidad útil. Aquí se calcula con el volumen útil diario y la capacidad útil diaria de energía de XM.";
+    if(/(aporte)/.test(q))return B_("Aportes hídricos")+": caudal natural que entra a los embalses, que suele compararse con la media histórica. Este tablero no los muestra; están en XM y el IDEAM.";
+    if(/(senda|curva guia)/.test(q))return B_("Senda de referencia")+": nivel mínimo diario del embalse útil del SIN que la CREG compara con el nivel real para detectar riesgo de abastecimiento (Res. CREG 026 de 2014 y modificaciones). Cambia durante el año; el tablero no la calcula.";
+    if(/(creg|criterio|\b70\b)/.test(q))return B_(band(70).t)+"<br>"+band(70).m+" "+DESCARGO;
+    if(/(meta|\b80\b)/.test(q)||/xm/.test(q)&&/niño|nino/.test(q))return B_(band(80).t)+"<br>"+band(80).m+" "+DESCARGO;
+    if(/umbral/.test(q))return B_("Umbral")+": un nivel de referencia que tú eliges (de 40% a 90%). Las regiones por debajo se marcan en rojo. Hay dos referencias aproximadas: 70% (criterio CREG) y 80% (meta de XM). "+DESCARGO;
+    if(/(region|regiones|hidrologica)/.test(q))return B_("Regiones hidrológicas")+": XM agrupa los embalses en seis: Antioquia, Caldas, Caribe, Centro, Oriente y Valle. Mira el mapa del tablero para ubicarlas de forma aproximada.";
+    if(/(nino|niño)/.test(q))return B_("El Niño")+": el tablero lo usa como contexto. Octubres de 2023 y 2024 corresponden al episodio de El Niño 2023–2024, y el 80% es la meta de XM ante El Niño. Para el estado actual y pronósticos consulta el IDEAM.";
+    if(/(embalse|represa)/.test(q)&&!ent.embs.length)return B_("Embalse")+": lago artificial formado por una presa que almacena agua. Ese volumen se usa para generar electricidad cuando hace falta. El SIN tiene "+res.length+" embalses en este tablero.";
+  }
+
+  if(/(quien (surte|abastece|le da|provee)|quienes (surten|abastecen)|que (surte|abastece)|otras regiones|resto del pais|zni|no interconectad|de donde (viene|sale) la (energia|luz)|como llega la (energia|luz))/.test(q))
+    return "El tablero muestra dónde está el agua, no a quién abastece."+ul(["Colombia tiene una red eléctrica nacional, el SIN: la energía se genera en unos lugares y se reparte por todo el país.","Se genera con agua (embalses y plantas de río), plantas térmicas, sol y viento. Los embalses del tablero son una parte del sistema.","Algunas zonas apartadas están fuera de esa red (zonas no interconectadas) y generan su propia energía con plantas locales."])+"Para el detalle de la generación consulta XM y la UPME.";
+  if(/(capacidad|almacena|peso|cuanta energia|gwh|tamano|mas grande|mas importante)/.test(q)&&!ent.embs.length){
+    var cs=regions.slice().sort(function(a,b){return CAP[b.n]-CAP[a.n]});
+    setMapMode("peso");
+    if(ent.regs.length){var rn=ent.regs[0].n;return B_(rn)+" puede almacenar unos "+B_(fmtn(CAP[rn])+" GWh")+", el "+(100*CAP[rn]/CAPT).toFixed(1)+"% de la capacidad útil de las seis regiones.";}
+    return "Según XM (8 oct 2026), la capacidad útil de almacenamiento se concentra en tres regiones:"+ul(cs.slice(0,3).map(function(r){return r.n+": "+fmtn(CAP[r.n])+" GWh ("+(100*CAP[r.n]/CAPT).toFixed(1)+"%)"}))+"Mostré el mapa por peso energético. Un nivel bajo en una región grande pesa más que en una pequeña. No indica a quién abastece cada región: el SIN es una red nacional.";
+  }
+  if(/(donde|ubic|mapa|queda|esta en que region|a que region)/.test(q)){
+    if(ent.embs.length){var x=ent.embs[0];pickRegion(x.r);return B_(x.n)+" pertenece a la región "+B_(x.r)+" según XM. Abrí su región en el mapa; la posición del círculo es aproximada.";}
+    if(ent.regs.length){pickRegion(ent.regs[0].n);var nm=res.filter(function(e){return e.r===ent.regs[0].n}).map(function(e){return e.n});return B_(ent.regs[0].n)+" agrupa: "+nm.join(", ")+". Resalté su círculo en el mapa; la posición es aproximada.";}
+    return "El mapa del tablero muestra las seis regiones hidrológicas de XM sobre Colombia, en el noroeste de Sudamérica. Cada círculo es una región y muestra su nivel de hoy. La posición es aproximada.";
+  }
+
+  if(ent.embs.length){
+    ent.regs.length&&0;
+    return ent.embs.slice(0,2).map(function(x){return cardEmb(x,cy)}).join("<br><br>");
+  }
+  if(ent.regs.length){
+    pickRegion(ent.regs[0].n);
+    return ent.regs.slice(0,2).map(function(r){return cardRegion(r,cy)}).join("<br><br>");
+  }
+
+  var set=isEmb?res.filter(function(x){return dY(x,cy)!=null}):regions;
+  var nom=isEmb?"embalses":"regiones",nom1=isEmb?"embalse":"región";
+  var nm=function(o){return o.n};
+
+  if(/(cuantas|cuantos)/.test(q)&&/(baj|cay|sub|aument|mejor)/.test(q)){
+    var dn=set.filter(function(o){return dY(o,cy)<0}).length,up=set.filter(function(o){return dY(o,cy)>0}).length;
+    return "Frente a oct "+cy+": "+B_(dn+" de "+set.length+" "+nom)+" bajaron y "+B_(up)+" subieron.";
+  }
+  if(/(caida|cayo|cayeron|perdio|perdieron|descenso|disminu|retroced|deterior|mayor baja|bajo mas|baja mas|bajaron mas|cual bajo|que bajo|cual baja|cuales bajaron|cuanto bajo|bajaron|bajo frente|bajo respecto)/.test(q)){
+    var w=topN(set,function(o){return dY(o,cy)},3,true).filter(function(o){return dY(o,cy)<0});
+    if(!w.length)return "Frente a oct "+cy+", ningún"+(isEmb?" embalse":"a región")+" bajó.";
+    return "Frente a oct "+cy+", la mayor caída fue la de "+B_(w[0].n)+": "+sgn(dY(w[0],cy))+" ("+f1(w[0].v[cy])+"% → "+f1(w[0].v[2026])+"%)."+(w.length>1?" Le siguen "+w.slice(1).map(function(o){return o.n+" ("+sgn(dY(o,cy))+")"}).join(" y ")+".":"");
+  }
+  if(/(subio|subieron|aumento|aumentaron|mejoro|mejoraron|recuper|incremento|crecio|crecieron|mayor alza|mayor aumento)/.test(q)){
+    var u=topN(set,function(o){return dY(o,cy)},3,false).filter(function(o){return dY(o,cy)>0});
+    if(!u.length)return "Frente a oct "+cy+", ningún"+(isEmb?" embalse":"a región")+" subió.";
+    return "Frente a oct "+cy+", la mayor subida fue la de "+B_(u[0].n)+": "+sgn(dY(u[0],cy))+" ("+f1(u[0].v[cy])+"% → "+f1(u[0].v[2026])+"%)."+(u.length>1?" Le siguen "+u.slice(1).map(function(o){return o.n+" ("+sgn(dY(o,cy))+")"}).join(" y ")+".":"");
+  }
+  var tm=q.match(/\b([4-9]\d)\b/),T2=tm&&+tm[1]>=40&&+tm[1]<=90?+tm[1]:T;
+  if(/(bajo el umbral|debajo|abajo de|alerta|preocup|menos de|inferior|por debajo|rojo|peor situacion|en riesgo|\bbajo (el )?[4-9]\d\b)/.test(q)){
+    var bl=set.filter(function(o){return o.v[2026]<T2}).sort(function(a,b){return a.v[2026]-b.v[2026]});
+    if(!bl.length)return "Con un umbral de "+T2+"%, ningún"+(isEmb?" embalse":"a región")+" está por debajo. "+DESCARGO;
+    return "Con un umbral de "+T2+"%, "+B_(bl.length+" de "+set.length+" "+nom)+" están por debajo:"+ul(bl.slice(0,8).map(function(o){return o.n+": "+f1(o.v[2026])+"%"}))+DESCARGO;
+  }
+  if(/(mas bajo|mas baja|menor|minimo|menos agua|peor|mas critic)/.test(q)){
+    var l=topN(set,function(o){return o.v[2026]},3,true);
+    return (isEmb?"El embalse":"La región")+" con menor nivel hoy es "+B_(l[0].n)+" ("+f1(l[0].v[2026])+"%). Le siguen "+l.slice(1).map(function(o){return o.n+" ("+f1(o.v[2026])+"%)"}).join(" y ")+".";
+  }
+  if(/(mas alto|mas alta|mayor|maximo|mas agua|mas lleno|mas llena|mejor)/.test(q)){
+    var h=topN(set,function(o){return o.v[2026]},3,false);
+    return (isEmb?"El embalse":"La región")+" con mayor nivel hoy es "+B_(h[0].n)+" ("+f1(h[0].v[2026])+"%). Le siguen "+h.slice(1).map(function(o){return o.n+" ("+f1(o.v[2026])+"%)"}).join(" y ")+".";
+  }
+  if(yrs.length&&!/(nacional|pais|colombia|sistema|general|total)/.test(q)){
+    var y=yrs[0];
+    return "En octubre de "+y+": nacional "+B_(f2(NAT[y])+"%")+ul(regions.slice().sort(function(a,b){return b.v[y]-a.v[y]}).map(function(r){return r.n+": "+f1(r.v[y])+"%"}))+(y===2026?"Corte del 8 de octubre.":"Corte del 31 de octubre.");
+  }
+  if(/(nacional|pais|colombia|sistema|\bsin\b|en general|total|como va|como estamos|como esta|situacion|resumen|panorama|cuanta agua)/.test(q)){
+    var a=NAT[cy],bb=NAT[2026],bad=regions.filter(function(r){return B(r)<T}).map(nm);
+    return "El nivel nacional hoy es "+B_(f2(bb)+"%")+" (cálculo con los 24 embalses, datos de XM)."+ul([
+      "Frente a oct "+cy+" ("+f2(a)+"%): "+sgn(bb-a),
+      "Otros octubres: 2023 "+f2(NAT[2023])+"% · 2024 "+f2(NAT[2024])+"% · 2025 "+f2(NAT[2025])+"%",
+      "Bajo "+T+"%: "+(bad.length?bad.join(", "):"ninguna región")
+    ]);
+  }
+  return "No tengo ese dato en el tablero. Puedo hablar del nivel nacional, de cada región o embalse, de cambios frente a 2023, 2024 y 2025, y de los términos del tablero. Prueba con una de las preguntas sugeridas.";
+}
+
+var aiOpen=false;
+function aiAdd(cls,html,isText){
+  var d=document.createElement("div");d.className="msg "+cls;
+  if(isText)d.textContent=html;else d.innerHTML=html;
+  $("aiMsgs").appendChild(d);$("aiMsgs").scrollTop=$("aiMsgs").scrollHeight;
+}
+function aiAsk(text){
+  aiAdd("user",text,true);
+  var r;
+  try{r=responder(text)}catch(e){r="No pude procesar esa pregunta. Prueba con otra o elige una sugerida."}
+  if(r)aiAdd("bot",r);
+}
+function aiToggle(open){
+  aiOpen=open;$("aiPanel").hidden=!open;$("aiBtn").setAttribute("aria-expanded",open);
+  if(open){if(!$("aiMsgs").children.length)aiAdd("bot","¡Hola! Soy el asistente de este tablero. Respondo solo con sus cifras: nivel nacional, regiones, embalses y términos. Elige una pregunta o escribe la tuya.");$("aiInput").focus();}
+  else $("aiBtn").focus();
+}
+$("aiChips").innerHTML=AI_CHIPS.map(function(c){return '<button type="button">'+c+'</button>'}).join("");
+$("aiChips").addEventListener("click",function(e){var b=e.target.closest("button");if(b)aiAsk(b.textContent)});
+$("aiBtn").addEventListener("click",function(){aiToggle(!aiOpen)});
+$("aiClose").addEventListener("click",function(){aiToggle(false)});
+$("aiPanel").addEventListener("keydown",function(e){if(e.key==="Escape")aiToggle(false)});
+$("aiForm").addEventListener("submit",function(e){e.preventDefault();var v=$("aiInput").value.trim();if(!v)return;$("aiInput").value="";aiAsk(v)});
+
 renderHero();renderRows();renderTanks();buildQuiz();
 </script>
-</html>
