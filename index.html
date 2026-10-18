@@ -226,17 +226,34 @@ body{padding-block:28px 100px}
 .rn .rname{font-weight:700}.rn .rname small{display:block;font-weight:400;color:var(--muted);font-size:.78rem}
 .rn .bars{display:flex;flex-direction:column;gap:3px;min-width:0}
 .rn .b{display:grid;grid-template-columns:34px 1fr 58px;gap:8px;align-items:center;font:500 .76rem/1 var(--f-mono)}
-.rn .b i{display:block;height:9px;border-radius:5px;background:var(--past)}
-.rn .b.cur i{background:var(--water);height:11px}
 .rn .b.cur{font-weight:700}
 .rn .b span:last-child{text-align:right}
 .rn .rtag{grid-column:2;display:flex;flex-wrap:wrap;gap:6px;font-size:.8rem;color:var(--muted)}
 .rn details{margin-top:10px}.rn summary{cursor:pointer;font-weight:600;color:var(--water)}
 .rn td.r,.rn th.r{text-align:right}
 .lfnote{background:var(--surface);color:var(--ink,inherit);border:1px solid var(--muted);border-radius:8px;padding:6px 9px;font-size:.78rem;max-width:300px;line-height:1.35}.lfnote a{color:var(--water);font-weight:600}
+
+.rn .bi{display:block;height:9px;border-radius:5px;background:#9fb1bc;background:var(--past,#9fb1bc);min-width:3px}
+.rn .b.cur .bi{height:11px;background:#0b7a9b;background:var(--water,#0b7a9b)}
+.rn button.gb{font:600 .78rem/1 var(--f-body,inherit);color:var(--water);background:var(--water-soft);border:0;border-radius:6px;padding:6px 9px;cursor:pointer}
+.rn button.gb:hover{outline:2px solid var(--water)}
+.rnchart{margin:14px 0;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.rnchart h3{margin:0 0 2px;font-size:1.05rem}
+.rnchart .sub{color:var(--muted);font-size:.82rem;margin:0 0 8px}
+.rnchart .tg{display:flex;gap:6px;margin:6px 0 8px;flex-wrap:wrap}
+.rnchart .tg button{font:600 .8rem/1 inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 12px;cursor:pointer}
+.rnchart .tg button[aria-pressed=true]{background:var(--water);color:#fff;border-color:var(--water)}
+.rnchart svg{width:100%;height:auto;display:block}
+.rnchart .ax{stroke:var(--line);stroke-width:1}.rnchart .tx{fill:var(--muted);font:500 11px var(--f-mono,monospace)}
+.rnchart .tv{fill:var(--ink);font:700 12px var(--f-mono,monospace)}
+.rnchart .ln{stroke:var(--water);stroke-width:2;fill:none}.rnchart .avg{stroke:var(--warn);stroke-width:1.6;stroke-dasharray:6 4}
+.rnchart .pt{fill:var(--past);stroke:var(--surface);stroke-width:2}.rnchart .pt.c{fill:var(--water)}
+.rnchart .bar{fill:none;stroke:var(--muted);stroke-width:1.6}.rnchart .fill{fill:var(--past)}.rnchart .fill.c{fill:var(--water)}
+.rnchart .cl{display:flex;justify-content:flex-end}
+.rnchart .mes{font-size:.84rem;color:var(--muted);margin:8px 0 0}
 .rnnote{font-size:.85rem;color:var(--muted)}
 .rn .lead{font-size:1.02rem;margin:4px 0 8px}
-@media(max-width:560px){.rn .rrow{grid-template-columns:1fr}.rn .rtag{grid-column:1}}
+@media(max-width:560px){.rn .rrow{display:block}.rn .rtag{margin-top:8px}}
 
 /* Mapa */
 .mapbox{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:22px;align-items:start;background:var(--bg);border-radius:12px;padding:16px}
@@ -427,8 +444,9 @@ body{padding-block:28px 100px}
     </div>
     <p class="lead" id="rnLead"></p>
     <div id="rnRows"></div>
+    <div id="rnChart" class="rnchart" hidden aria-live="polite"></div>
     <details><summary>Ver las 30 cuencas, de la que menos llovió a la que más, frente a 2023–2025</summary>
-      <div class="tabwrap"><table><thead><tr><th>Cuenca</th><th>Región</th><th class="r">2023</th><th class="r">2024</th><th class="r">2025</th><th class="r">2026</th><th class="r">2026 vs promedio 2023–25</th></tr></thead><tbody id="rnBody"></tbody></table></div>
+      <div class="tabwrap"><table><thead><tr><th>Cuenca</th><th>Región</th><th class="r">2023</th><th class="r">2024</th><th class="r">2025</th><th class="r">2026</th><th class="r">2026 vs promedio 2023–25</th><th></th></tr></thead><tbody id="rnBody"></tbody></table></div>
     </details>
     <p class="rnnote">Cómo leerlo: cada región es el promedio simple de las lluvias de sus cuencas (las cuencas de una misma cadena se traslapan, por eso es una referencia, no un balance hídrico). CHIRPS combina satélite y estaciones, y tiene incertidumbre sobre terreno montañoso. Además, que llueva más o menos no se traduce de inmediato en nivel: el nivel también depende de cómo estaba el embalse al empezar junio y de cómo se opera. Con cuatro años se compara entre años; no se dice «normal» sin una serie más larga.</p>
   </section>
@@ -787,13 +805,52 @@ function renderRain(){
     (ant?"En <strong>Antioquia</strong> cayó "+Math.abs(ant.v25*100).toFixed(0)+"% frente a 2025 y quedó al nivel de 2023 ("+Math.round(ant.t[2026])+" mm contra "+Math.round(ant.t[2023])+" mm). ":"")+
     (val&&val.v25>0&&rr.filter(function(o){return o.v25>0}).length===1?"<strong>Valle</strong> es la única donde llovió más que en 2025 ("+pc(val.v25)+")"+(val.lv&&val.lv[2026]>val.lv[2025]&&regions.filter(function(g){return g.v[2026]>g.v[2025]}).length===1?", y también la única con más nivel que en octubre de 2025.":"."):"");
   $("rnRows").innerHTML=rr.slice().sort(function(a,b){return a.vav-b.vav}).map(function(o){
-    var bars=[2023,2024,2025,2026].map(function(y){return '<div class="b'+(y===2026?' cur':'')+'"><span>'+y+'</span><i style="width:'+Math.max(2,o.t[y]/mx*100).toFixed(1)+'%"></i><span>'+Math.round(o.t[y])+' mm</span></div>'}).join("");
+    var bars=[2023,2024,2025,2026].map(function(y){return '<div class="b'+(y===2026?' cur':'')+'"><span>'+y+'</span><span class="bi" style="width:'+Math.max(2,o.t[y]/mx*100).toFixed(1)+'%"></span><span>'+Math.round(o.t[y])+' mm</span></div>'}).join("");
     var lv=o.lv?'Nivel XM 16 oct: '+f1(o.lv[2026])+'% ('+sgn(o.lv[2026]-o.lv[2025])+' vs 2025)':'';
-    return '<div class="rrow"><div class="rname">'+o.n+'<small>'+o.k+(o.k===1?' cuenca':' cuencas')+'</small></div><div class="bars">'+bars+'</div><div class="rtag"><span class="d '+(o.v25>=0?'up':'dn')+'">'+pc(o.v25)+' vs 2025</span><span class="d '+(o.vav>=0?'up':'dn')+'">'+pc(o.vav)+' vs prom. 2023–25</span><span>'+lv+'</span></div></div>'}).join("");
-  $("rnBody").innerHTML=RAIN.map(function(c){var t=[2023,2024,2025,2026].map(function(y){return rainTot(c,y)}),a=(t[0]+t[1]+t[2])/3;return{n:c.n,r:c.r,t:t,v:t[3]/a-1}}).sort(function(a,b){return a.v-b.v}).map(function(x){return '<tr><td>'+x.n+'</td><td>'+x.r+'</td>'+x.t.map(function(v){return '<td class="r mono">'+Math.round(v)+'</td>'}).join("")+'<td class="r"><span class="d '+(x.v>=0?'up':'dn')+'">'+pc(x.v)+'</span></td></tr>'}).join("");
+    return '<div class="rrow"><div class="rname">'+o.n+'<small>'+o.k+(o.k===1?' cuenca':' cuencas')+'</small></div><div class="bars">'+bars+'</div><div class="rtag"><span class="d '+(o.v25>=0?'up':'dn')+'">'+pc(o.v25)+' vs 2025</span><span class="d '+(o.vav>=0?'up':'dn')+'">'+pc(o.vav)+' vs prom. 2023–25</span><span>'+lv+'</span><button type="button" class="gb" data-rk="r:'+o.n+'">Ver gráfica</button></div></div>'}).join("");
+  $("rnBody").innerHTML=RAIN.map(function(c){var t=[2023,2024,2025,2026].map(function(y){return rainTot(c,y)}),a=(t[0]+t[1]+t[2])/3;return{n:c.n,r:c.r,t:t,v:t[3]/a-1}}).sort(function(a,b){return a.v-b.v}).map(function(x){return '<tr><td>'+x.n+'</td><td>'+x.r+'</td>'+x.t.map(function(v){return '<td class="r mono">'+Math.round(v)+'</td>'}).join("")+'<td class="r"><span class="d '+(x.v>=0?'up':'dn')+'">'+pc(x.v)+'</span></td><td><button type="button" class="gb" data-rk="c:'+x.n+'">Ver gráfica</button></td></tr>'}).join("");
   RN=rr;
 }
 var RN=[];
+var RC={k:null,mode:"line"};
+function rcData(k){
+  var t=k.slice(2),r;
+  if(k[0]==="r"){r=RN.filter(function(o){return o.n===t})[0];if(!r)return null;return{name:t,sub:"Región · promedio de "+r.k+(r.k===1?" cuenca":" cuencas"),t:r.t,m:null}}
+  var c=RAIN.filter(function(x){return x.n===t})[0];if(!c)return null;
+  var tt={};[2023,2024,2025,2026].forEach(function(y){tt[y]=rainTot(c,y)});
+  return{name:c.n,sub:"Cuenca aferente · región "+c.r,t:tt,m:c.m}}
+function rcLine(d,avg,mx){
+  var W=360,H=210,L=40,R=58,T=22,B=30,pw=W-L-R,ph=H-T-B,ys=function(v){return T+ph-(v/mx)*ph},xs=function(i){return L+pw*(i+.5)/4},Y=[2023,2024,2025,2026];
+  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Lluvia acumulada de junio a septiembre por año, con el promedio 2023–2025">';
+  [0,.5,1].forEach(function(f){var v=mx*f;s+='<line class="ax" x1="'+L+'" x2="'+(W-R)+'" y1="'+ys(v)+'" y2="'+ys(v)+'"/><text class="tx" x="'+(L-5)+'" y="'+(ys(v)+4)+'" text-anchor="end">'+Math.round(v)+'</text>'});
+  s+='<line class="avg" x1="'+L+'" x2="'+(W-R)+'" y1="'+ys(avg)+'" y2="'+ys(avg)+'"/><text class="tx" x="'+(W-R+5)+'" y="'+(ys(avg)-2)+'" style="fill:var(--warn)">prom.</text><text class="tx" x="'+(W-R+5)+'" y="'+(ys(avg)+11)+'" style="fill:var(--warn)">'+Math.round(avg)+'</text>';
+  s+='<polyline class="ln" points="'+Y.map(function(y,i){return xs(i)+","+ys(d.t[y])}).join(" ")+'"/>';
+  Y.forEach(function(y,i){var c=y===2026;s+='<circle class="pt'+(c?' c':'')+'" cx="'+xs(i)+'" cy="'+ys(d.t[y])+'" r="'+(c?7:5)+'"/><text class="tv" x="'+xs(i)+'" y="'+(ys(d.t[y])-11)+'" text-anchor="middle">'+Math.round(d.t[y])+'</text><text class="tx" x="'+xs(i)+'" y="'+(H-10)+'" text-anchor="middle" style="'+(c?'font-weight:700':'')+'">'+y+'</text>'});
+  return s+'</svg>';
+}
+function rcBarrels(d,avg,mx){
+  var W=360,H=210,Y=[2023,2024,2025,2026],bw=50,top=30,bh=130,s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Barriles de lluvia acumulada por año">';
+  Y.forEach(function(y,i){var x=14+i*74,v=d.t[y],fh=bh*v/mx,c=y===2026;
+    s+='<rect class="fill'+(c?' c':'')+'" x="'+x+'" y="'+(top+bh-fh)+'" width="'+bw+'" height="'+fh+'" rx="3"/>'+
+       '<path class="bar" d="M'+x+','+top+' L'+x+','+(top+bh)+' Q'+(x+bw/2)+','+(top+bh+9)+' '+(x+bw)+','+(top+bh)+' L'+(x+bw)+','+top+'"/><ellipse class="bar" cx="'+(x+bw/2)+'" cy="'+top+'" rx="'+(bw/2)+'" ry="5"/>'+
+       '<text class="tv" x="'+(x+bw/2)+'" y="'+(top-12)+'" text-anchor="middle">'+Math.round(v)+'</text><text class="tx" x="'+(x+bw/2)+'" y="'+(H-12)+'" text-anchor="middle" style="'+(c?'font-weight:700':'')+'">'+y+'</text>'});
+  var ya=top+bh-bh*avg/mx;
+  return s+'<line class="avg" x1="8" x2="'+(W-62)+'" y1="'+ya+'" y2="'+ya+'"/><text class="tx" x="'+(W-58)+'" y="'+(ya-2)+'" style="fill:var(--warn)">prom.</text><text class="tx" x="'+(W-58)+'" y="'+(ya+11)+'" style="fill:var(--warn)">'+Math.round(avg)+'</text></svg>';
+}
+function rcRender(){
+  var box=$("rnChart"),d=rcData(RC.k);if(!d){box.hidden=true;return}
+  var avg=(d.t[2023]+d.t[2024]+d.t[2025])/3,mx=Math.max(d.t[2023],d.t[2024],d.t[2025],d.t[2026],avg)*1.15,v=d.t[2026]/avg-1,v25=d.t[2026]/d.t[2025]-1;
+  var mes=d.m?'<p class="mes"><strong>2026 por mes</strong> (mm): jun '+Math.round(d.m[2026][0])+' · jul '+Math.round(d.m[2026][1])+' · ago '+Math.round(d.m[2026][2])+' · sep '+Math.round(d.m[2026][3])+'. Promedio 2023–25: '+[0,1,2,3].map(function(i){return ["jun","jul","ago","sep"][i]+" "+Math.round((d.m[2023][i]+d.m[2024][i]+d.m[2025][i])/3)}).join(" · ")+'.</p>':'';
+  box.innerHTML='<div class="cl"><button type="button" class="gb" id="rcX" aria-label="Cerrar gráfica">Cerrar ✕</button></div><h3>'+d.name+'</h3><p class="sub">'+d.sub+' · lluvia acumulada de junio a septiembre (mm)</p>'+
+   '<div class="tg" role="group" aria-label="Tipo de gráfica"><button type="button" id="rcL" aria-pressed="'+(RC.mode==="line")+'">Línea</button><button type="button" id="rcB" aria-pressed="'+(RC.mode==="bar")+'">Barriles</button></div>'+
+   (RC.mode==="line"?rcLine(d,avg,mx):rcBarrels(d,avg,mx))+
+   '<p class="sub" style="margin-top:6px">2026 quedó <strong>'+pc(v)+'</strong> frente al promedio 2023–25 y <strong>'+pc(v25)+'</strong> frente a 2025 (CHIRPS v3). La línea punteada es el promedio de 2023, 2024 y 2025.</p>'+mes;
+  box.hidden=false;
+  $("rcX").onclick=function(){RC.k=null;box.hidden=true};
+  $("rcL").onclick=function(){RC.mode="line";rcRender()};$("rcB").onclick=function(){RC.mode="bar";rcRender()};
+}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("button[data-rk]");if(!b)return;RC.k=b.getAttribute("data-rk");rcRender();var bx=$("rnChart");if(bx.scrollIntoView)bx.scrollIntoView({behavior:"smooth",block:"center"})});
+
 function renderWeek(){
   var rows=res.map(function(e){var a=P8.emb[e.n],b=e.v["2026"];return{n:e.n,r:e.r,a:a,b:b,d:(a==null||b==null)?null:b-a}}).filter(function(x){return x.d!=null}).sort(function(x,y){return y.d-x.d});
   var up=rows[0],dn=rows[rows.length-1],it=rows.filter(function(x){return x.n==="Ituango"})[0],nd=NAT[2026]-P8.nat;
