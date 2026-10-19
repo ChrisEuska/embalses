@@ -251,6 +251,27 @@ body{padding-block:28px 100px}
 .rnchart .bar{fill:none;stroke:var(--muted);stroke-width:1.6}.rnchart .fill{fill:var(--past)}.rnchart .fill.c{fill:var(--water)}
 .rnchart .cl{display:flex;justify-content:flex-end}
 .rnchart .mes{font-size:.84rem;color:var(--muted);margin:8px 0 0}
+
+.wt .lead{font-size:1.02rem;margin:4px 0 12px}
+.wt .ctl{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+.wt .chip{display:flex;align-items:flex-start;gap:9px;flex:1 1 260px;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--surface);cursor:pointer}
+.wt .chip input{margin-top:3px;width:18px;height:18px;accent-color:var(--water);flex:none}
+.wt .chip b{display:block;font-size:.95rem}.wt .chip small{display:block;color:var(--muted);font-size:.78rem;line-height:1.3;margin-top:2px}
+.wt .chip .sw{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:baseline}
+.wt .chip.on{border-color:var(--water);background:var(--water-soft)}
+#pwmap{height:min(560px,75vh);border-radius:12px;background:var(--water-soft);z-index:0;margin:8px 0 4px}
+.wt .sumline{font-size:.95rem;margin:6px 0 10px}
+.wt .rk{display:grid;grid-template-columns:minmax(104px,150px) 1fr 74px;gap:10px;align-items:center;padding:5px 0}
+.wt .rk .nm{font-weight:600;line-height:1.2}.wt .rk .nm small{display:block;font-weight:400;color:var(--muted);font-size:.74rem}
+.wt .rk .bb{height:14px;border-radius:7px;min-width:3px}
+.wt .rk .vv{text-align:right;font:700 .9rem/1.1 var(--f-mono)}.wt .rk .vv small{display:block;font-weight:400;color:var(--muted);font-size:.7rem}
+.wt .lfl{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--muted);margin:2px 0 6px}
+.wt .lfl i{display:inline-block;border-radius:50%;border:1.5px solid var(--surface);box-shadow:0 0 0 1px var(--muted);vertical-align:middle;margin-right:5px}
+.wt details{margin-top:10px}.wt summary{cursor:pointer;font-weight:600;color:var(--water)}
+.wt td.r,.wt th.r{text-align:right}
+.pwl{background:transparent!important;border:0!important;box-shadow:none!important;font:700 11px var(--f-body,sans-serif)!important;color:#0c2331!important;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 2px #fff;padding:0!important}
+.pwl:before{display:none!important}
+@media(max-width:560px){.wt .rk{grid-template-columns:1fr 64px}.wt .rk .bw{grid-column:1/-1;order:3}}
 .rnnote{font-size:.85rem;color:var(--muted)}
 .rn .lead{font-size:1.02rem;margin:4px 0 8px}
 @media(max-width:560px){.rn .rrow{display:block}.rn .rtag{margin-top:8px}}
@@ -434,6 +455,27 @@ body{padding-block:28px 100px}
     <div class="controls"><input id="searchInput" class="search" type="search" placeholder="Filtrar embalse o región…" aria-label="Filtrar embalse o región"></div>
     <div class="tanks" id="tanks"></div>
     <div class="tabwrap"><table id="tbl"><thead><tr><th>Región</th><th>Embalse</th><th class="r" id="thBase">Oct 2025</th><th class="r">Oct 2026</th><th class="r">Cambio</th><th>Frente a 70% y 80%</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="panel wt" id="peso">
+    <div class="head">
+      <span class="eyebrow">Contexto · cuánto pesa cada embalse</span>
+      <h2>¿Cuánto aporta cada embalse al sistema del país?</h2>
+      <p class="muted">Cada círculo es un embalse y su <strong>tamaño muestra qué parte de la capacidad útil de energía del país tiene</strong> (el 100% son los 24 embalses juntos). Aquí no se mira qué tan lleno está, solo cuánto pesa. Datos de XM al 16 de octubre de 2026.</p>
+    </div>
+    <p class="lead" id="wtLead"></p>
+    <div class="ctl" role="group" aria-label="Qué embalses mostrar">
+      <label class="chip on" id="chBig"><input type="checkbox" id="cbBig" checked><span><b><i class="sw" style="background:var(--water)"></i>Embalses grandes</b><small>Aportan 1% o más de la capacidad del país. Regulan a largo plazo: guardan agua para los meses secos.</small></span></label>
+      <label class="chip on" id="chSmall"><input type="checkbox" id="cbSmall" checked><span><b><i class="sw" style="background:var(--warn)"></i>Embalses menores (regulación de corto plazo)</b><small>Aportan menos de 1%. Suelen regular el agua por horas, días o semanas y operan en cascada, aguas abajo de los grandes. Apágalos para ver solo los grandes.</small></span></label>
+    </div>
+    <p class="sumline" id="wtSum" aria-live="polite"></p>
+    <div id="pwmap" role="application" aria-label="Mapa de Colombia con el aporte de cada embalse a la capacidad del país"></div>
+    <p class="lfl" id="pwHint"></p>
+    <div id="wtRows"></div>
+    <details><summary>Ver los 24 embalses en una tabla, con su cambio en 8 días (GWh)</summary>
+      <div class="tabwrap"><table><thead><tr><th>Embalse</th><th>Región</th><th>Grupo</th><th class="r">Capacidad útil (GWh)</th><th class="r">Aporte al país</th><th class="r">Cambio 8 d (GWh)</th></tr></thead><tbody id="wtBody"></tbody></table></div>
+    </details>
+    <p class="rnnote"><strong>Cómo leerlo.</strong> Capacidad útil de XM expresada en energía (GWh). La separación entre grandes y menores es solo por tamaño (1% de la capacidad del país); no es una clasificación oficial de XM. Los menores, como Punchiná, Playas, Troneras o Porce II, no se diseñan para guardar agua por meses: reciben las descargas de los grandes aguas arriba y las turbinan casi de inmediato, por eso un nivel bajo ahí pesa poco en el total. «Agregado Bogotá» es un conjunto de varios embalses de la zona del Bogotá según lo reporta XM, y su círculo está ubicado de forma aproximada.</p>
   </section>
 
   <section class="panel rn" id="lluvia">
@@ -791,6 +833,58 @@ $("vMapa").addEventListener("click",function(){if(LF.failed)LF.failed=false;mapV
 
 var RAIN=[{"n":"Altoanchicayá","r":"Valle","m":{"2023":[133.2,152.0,161.2,125.6],"2024":[240.2,156.3,128.2,101.9],"2025":[219.6,126.1,173.7,175.4],"2026":[242.9,218.4,171.0,181.3]}},{"n":"Amaní (Miel I)","r":"Caldas","m":{"2023":[203.2,144.7,242.1,201.9],"2024":[388.4,209.5,228.8,239.6],"2025":[300.2,61.7,377.4,299.5],"2026":[284.0,89.4,108.6,337.0]}},{"n":"Betania","r":"Centro","m":{"2023":[83.0,116.7,91.0,51.9],"2024":[202.2,100.7,95.6,83.9],"2025":[215.8,90.2,107.8,93.2],"2026":[146.3,110.9,73.9,71.3]}},{"n":"Calima","r":"Valle","m":{"2023":[77.0,87.8,127.1,113.7],"2024":[203.1,119.7,85.8,82.4],"2025":[149.9,76.9,153.1,136.5],"2026":[139.3,104.3,104.2,151.3]}},{"n":"Chisacá","r":"Centro","m":{"2023":[65.1,100.5,72.8,40.1],"2024":[116.3,102.6,75.4,61.6],"2025":[154.0,99.8,111.7,88.2],"2026":[94.8,79.7,69.6,52.9]}},{"n":"Chivor (La Esmeralda)","r":"Oriente","m":{"2023":[177.6,201.3,170.8,86.4],"2024":[251.5,188.5,181.9,146.2],"2025":[233.8,244.0,159.6,100.6],"2026":[170.8,238.3,184.8,111.1]}},{"n":"Chuza","r":"Oriente","m":{"2023":[238.5,375.7,281.9,115.3],"2024":[330.7,274.4,250.3,202.8],"2025":[399.0,251.6,273.8,193.0],"2026":[260.7,295.6,239.1,113.8]}},{"n":"El Hato","r":"Centro","m":{"2023":[62.2,67.0,64.3,36.6],"2024":[88.3,37.9,40.3,58.4],"2025":[96.3,79.8,64.4,21.2],"2026":[69.7,67.1,49.0,44.5]}},{"n":"El Muña","r":"Centro","m":{"2023":[42.0,49.3,43.7,29.5],"2024":[81.2,46.9,51.5,51.9],"2025":[110.9,43.0,68.7,60.6],"2026":[71.1,35.5,39.1,36.8]}},{"n":"El Peñol","r":"Antioquia","m":{"2023":[201.6,202.7,182.1,179.3],"2024":[387.2,153.6,195.3,191.0],"2025":[350.3,145.4,365.2,330.8],"2026":[233.7,146.5,182.2,190.5]}},{"n":"El Quimbo","r":"Centro","m":{"2023":[117.0,155.0,100.4,58.1],"2024":[201.9,119.7,126.0,98.4],"2025":[248.0,107.1,120.6,108.2],"2026":[171.9,122.9,105.3,79.4]}},{"n":"Guavio","r":"Oriente","m":{"2023":[209.8,312.2,249.6,111.3],"2024":[307.6,249.9,244.4,195.9],"2025":[345.2,266.2,234.6,145.0],"2026":[231.8,298.7,226.8,113.3]}},{"n":"Ituango","r":"Antioquia","m":{"2023":[96.8,107.4,124.9,92.6],"2024":[238.3,95.7,98.5,104.9],"2025":[202.7,64.5,164.6,134.1],"2026":[140.0,98.1,80.4,125.8]}},{"n":"Las Playas","r":"Antioquia","m":{"2023":[239.6,228.6,216.9,218.0],"2024":[413.8,163.9,205.5,203.4],"2025":[371.2,180.8,397.8,397.1],"2026":[277.3,169.5,235.8,230.3]}},{"n":"Miraflores","r":"Antioquia","m":{"2023":[238.5,253.9,216.4,191.9],"2024":[456.0,195.2,197.2,219.1],"2025":[397.0,320.2,333.9,316.9],"2026":[259.9,194.6,251.1,150.0]}},{"n":"Neusa","r":"Centro","m":{"2023":[70.1,85.0,69.2,48.1],"2024":[107.0,51.3,55.9,72.9],"2025":[122.2,102.6,80.4,27.4],"2026":[80.9,85.6,55.5,52.8]}},{"n":"Porce II","r":"Antioquia","m":{"2023":[177.2,176.5,162.2,177.4],"2024":[368.1,142.5,156.1,175.2],"2025":[317.3,183.2,289.0,278.5],"2026":[212.5,142.8,190.7,158.4]}},{"n":"Porce III","r":"Antioquia","m":{"2023":[185.1,184.8,167.4,179.6],"2024":[377.7,148.2,161.4,180.3],"2025":[325.7,197.6,294.5,284.9],"2026":[217.5,149.0,199.6,161.5]}},{"n":"Prado","r":"Centro","m":{"2023":[48.5,66.0,58.9,61.7],"2024":[196.1,74.8,62.0,74.7],"2025":[116.6,27.0,52.2,172.8],"2026":[106.9,26.2,25.9,67.2]}},{"n":"Punchiná","r":"Antioquia","m":{"2023":[248.0,229.1,229.7,226.7],"2024":[411.2,164.3,208.3,205.8],"2025":[371.3,181.8,402.3,409.0],"2026":[287.2,172.7,247.6,244.5]}},{"n":"Regadera","r":"Centro","m":{"2023":[73.0,113.4,80.9,42.0],"2024":[125.9,110.4,82.7,67.8],"2025":[164.4,109.0,115.9,92.8],"2026":[99.5,88.4,75.3,57.2]}},{"n":"Riogrande II","r":"Antioquia","m":{"2023":[135.1,140.3,128.0,139.0],"2024":[321.3,129.7,127.1,147.1],"2025":[280.2,156.2,217.2,212.3],"2026":[169.5,117.8,140.2,106.8]}},{"n":"Salvajina","r":"Valle","m":{"2023":[69.4,89.9,115.1,72.8],"2024":[200.1,78.4,80.6,73.7],"2025":[200.4,52.0,113.1,94.7],"2026":[143.8,112.5,59.2,156.8]}},{"n":"San Lorenzo","r":"Antioquia","m":{"2023":[228.7,222.0,204.7,207.8],"2024":[410.3,160.3,200.0,200.0],"2025":[366.4,173.8,387.9,380.3],"2026":[266.2,163.3,220.7,216.9]}},{"n":"San Rafael","r":"Centro","m":{"2023":[60.6,101.5,96.8,56.4],"2024":[130.8,106.0,81.0,89.1],"2025":[148.0,87.0,103.4,65.9],"2026":[74.8,88.2,70.7,44.3]}},{"n":"Sisga","r":"Centro","m":{"2023":[137.6,200.7,143.4,64.7],"2024":[234.9,184.1,174.4,137.3],"2025":[251.5,281.6,166.7,51.8],"2026":[170.5,236.5,171.8,82.0]}},{"n":"Tominé","r":"Centro","m":{"2023":[84.7,151.7,107.8,47.7],"2024":[166.7,125.6,122.2,100.2],"2025":[175.4,152.6,128.5,42.4],"2026":[111.8,140.7,106.7,54.7]}},{"n":"Topocoro (Sogamoso)","r":"Centro","m":{"2023":[108.2,107.9,106.9,78.5],"2024":[180.5,99.2,100.2,114.0],"2025":[129.0,121.0,128.2,128.5],"2026":[131.3,110.1,93.5,98.0]}},{"n":"Troneras","r":"Antioquia","m":{"2023":[235.3,244.6,217.8,216.9],"2024":[462.4,186.7,196.6,221.8],"2025":[407.2,300.0,364.9,358.7],"2026":[273.0,192.2,266.5,168.0]}},{"n":"Urrá I","r":"Caribe","m":{"2023":[314.0,387.3,379.9,332.6],"2024":[474.3,322.8,335.2,369.0],"2025":[462.3,375.9,399.8,320.3],"2026":[337.0,336.3,336.6,287.6]}}];
 
+var GWH=[["El Peñol","Antioquia",4153.9,3236.6,-6.7],["Agregado Bogotá","Centro",4004.2,2536.7,-113.4],["Guavio","Oriente",1977.9,1691.6,13.8],["El Quimbo","Centro",1060.5,884.8,-12.4],["Topocoro","Centro",1028.7,859.6,79.2],["Chuza","Oriente",971.2,869.2,-12.2],["Esmeralda","Oriente",893.8,861.6,6.6],["Riogrande II","Antioquia",543.8,357.3,38.5],["Salvajina","Valle",514.4,299.7,-4.8],["Miraflores","Antioquia",456.7,368.0,2.6],["San Lorenzo","Antioquia",425.7,328.5,22.3],["Amaní","Caldas",253.7,166.3,5.2],["Ituango","Antioquia",250.3,150.6,44.4],["Calima I","Valle",233.3,144.7,-0.6],["Urrá I","Caribe",140.6,105.6,0.6],["Porce II","Antioquia",124.1,58.1,-15.3],["Betania","Centro",118.5,90.8,8.3],["Porce III","Antioquia",112.1,77.2,23.2],["Playas","Antioquia",95.1,71.1,5.5],["Prado","Centro",90.4,38.4,5.0],["Punchiná","Antioquia",65.9,16.1,5.7],["Troneras","Antioquia",58.4,47.1,-1.3],["Muña","Centro",54.9,38.0,1.2],["Alto Anchicayá","Valle",36.5,12.9,2.4]];
+function nf(x){return Math.round(x).toLocaleString("es-CO")}
+function pcs(x){return x.toFixed(1).replace(".",",")+"%"}
+function pc2(x){return x.toFixed(2).replace(".",",")+"%"}
+var PWC={"El Peñol":[6.261,-75.19],"Ituango":[7.134,-75.662],"Guavio":[4.714,-73.536],"Esmeralda":[4.95,-73.327],"Calima I":[3.892,-76.492],"Salvajina":[2.88,-76.697],"Urrá I":[7.94,-76.29],"El Quimbo":[2.449,-75.564],"Chuza":[4.599,-73.705],"Topocoro":[7.101,-73.407],"Amaní":[5.564,-74.887],"Betania":[2.685,-75.44],"Punchiná":[6.211,-74.841],"Porce II":[6.8,-75.07],"Porce III":[6.949,-75.146],"Riogrande II":[6.466,-75.421],"Miraflores":[6.731,-75.31],"Troneras":[6.69,-75.3],"Playas":[6.218,-75.012],"San Lorenzo":[6.373,-75.001],"Prado":[3.746,-74.906],"Muña":[4.54,-74.267],"Alto Anchicayá":[3.524,-76.894],"Agregado Bogotá":[4.73,-74.02]};
+var PWD={"El Peñol":"left","Agregado Bogotá":"left","Guavio":"right","El Quimbo":"left","Topocoro":"right","Chuza":"bottom","Esmeralda":"top"};
+var PW={map:null,lay:null,col:null,ok:0,note:null,show:{big:true,small:true}};
+function pwBig(r,T){return r[2]/T*100>=1}
+function pwVis(){var T=GWH.reduce(function(a,r){return a+r[2]},0);return GWH.filter(function(r){return pwBig(r,T)?PW.show.big:PW.show.small})}
+function renderPesoList(){
+  var T=GWH.reduce(function(a,r){return a+r[2]},0),vis=pwVis(),mx=GWH[0][2];
+  var sv=vis.reduce(function(a,r){return a+r[2]},0);
+  $("wtSum").innerHTML=vis.length?'Mostrando <strong>'+vis.length+' de 24</strong> embalses: suman <strong>'+nf(sv)+' GWh</strong>, el <strong>'+pcs(sv/T*100)+'</strong> de la capacidad útil del país.':'No hay embalses seleccionados. Enciende al menos un grupo.';
+  $("wtRows").innerHTML=vis.map(function(r){var big=pwBig(r,T),sh=r[2]/T*100;
+    return '<div class="rk"><div class="nm">'+r[0]+'<small>'+r[1]+(big?'':' · menor')+'</small></div><div class="bw"><div class="bb" style="width:'+Math.max(1.5,r[2]/mx*100).toFixed(1)+'%;background:'+(big?'var(--water)':'var(--warn)')+'"></div></div><div class="vv">'+pcs(sh)+'<small>'+nf(r[2])+' GWh</small></div></div>'}).join("");
+  $("chBig").classList.toggle("on",PW.show.big);$("chSmall").classList.toggle("on",PW.show.small);
+}
+function renderPesoMap(){
+  if(!window.L){loadLeaflet(function(ok){if(ok)renderPesoMap();else{$("pwmap").style.display="none";$("pwHint").textContent="El mapa necesita conexión a internet; la lista de abajo muestra lo mismo."}});return}
+  var el=$("pwmap"),T=GWH.reduce(function(a,r){return a+r[2]},0);
+  if(!PW.map){
+    PW.map=L.map(el,{center:[5.2,-74.6],zoom:6,zoomSnap:.25,minZoom:5,maxZoom:11,scrollWheelZoom:false});var pts=Object.keys(PWC).map(function(k){return PWC[k]});PW.map.fitBounds(L.latLngBounds(pts),{padding:[40,40],maxZoom:7.5});
+    var tl=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",{maxZoom:11,attribution:"Tiles &copy; Esri &mdash; Esri, HERE, Garmin, USGS, OpenStreetMap contributors"}).addTo(PW.map);
+    tl.on("tileload",function(){PW.ok++;if(PW.col)PW.col.setStyle({fillOpacity:0});if(PW.note){PW.note.remove();PW.note=null}});
+    PW.col=L.geoJSON(COLG,{interactive:false,style:{color:css('--muted'),weight:1.2,fillColor:css('--surface'),fillOpacity:0}}).addTo(PW.map);
+    setTimeout(function(){if(PW.ok===0&&PW.col){PW.col.setStyle({fillOpacity:1});var N=L.control({position:"bottomleft"});N.onAdd=function(){var d=L.DomUtil.create("div","lfnote");d.innerHTML="Esta vista no carga el mapa base (relieve y ríos). Ábrelo en <a href=\"https://chriseuska.github.io/embalses/\" target=\"_blank\" rel=\"noopener\">chriseuska.github.io/embalses</a> para verlo completo.";return d};N.addTo(PW.map);PW.note=N}},3500);
+    PW.lay=L.layerGroup().addTo(PW.map);
+    PW.map.on("focus",function(){PW.map.scrollWheelZoom.enable()});PW.map.on("blur",function(){PW.map.scrollWheelZoom.disable()});
+  }
+  PW.map.invalidateSize();PW.lay.clearLayers();
+  var big=css("--water"),sm=css("--warn"),srf=css("--surface");
+  pwVis().slice().sort(function(a,b){return b[2]-a[2]}).forEach(function(r){
+    var c=PWC[r[0]];if(!c)return;var sh=r[2]/T*100,isB=pwBig(r,T),rad=5+30*Math.sqrt(sh/23.5);
+    var m=L.circleMarker(c,{radius:rad,color:srf,weight:1.5,fillColor:isB?big:sm,fillOpacity:.72});
+    var txt='<div class="lpop"><b>'+r[0]+'</b>Región '+r[1]+'<br>Capacidad útil: '+nf(r[2])+' GWh<br>Aporte al país: <b>'+pcs(sh)+'</b>'+(r[0]==="Agregado Bogotá"?'<br><small>Conjunto de embalses; ubicación aproximada</small>':'')+'</div>';
+    m.bindPopup(txt).addTo(PW.lay);
+    if(sh>=5&&el.clientWidth>560)m.bindTooltip(r[0]+" "+pcs(sh),{permanent:true,direction:PWD[r[0]]||"right",className:"pwl",offset:[0,0]});
+  });
+  $("pwHint").innerHTML='<span><i style="width:14px;height:14px;background:'+big+'"></i>Grande (≥1%)</span><span><i style="width:10px;height:10px;background:'+sm+'"></i>Menor (&lt;1%)</span><span>El área del círculo es proporcional al aporte. Toca un círculo para ver el dato.</span>';
+}
+function renderPeso(){
+  var T=GWH.reduce(function(a,r){return a+r[2]},0),V=GWH.reduce(function(a,r){return a+r[3]},0);
+  var c3=GWH.slice(0,3).reduce(function(a,r){return a+r[2]},0)/T*100,c5=GWH.slice(0,5).reduce(function(a,r){return a+r[2]},0)/T*100;
+  var it=GWH.filter(function(r){return r[0]==="Ituango"})[0],bo=GWH.filter(function(r){return r[0]==="Agregado Bogotá"})[0];
+  $("wtLead").innerHTML="Entre los 24 embalses suman <strong>"+nf(T)+" GWh</strong> de capacidad útil y hoy guardan <strong>"+nf(V)+" GWh</strong> ("+pc2(V/T*100)+"). Solo tres (El Peñol, Agregado Bogotá y Guavio) concentran el <strong>"+Math.round(c3)+"%</strong> de la capacidad, y los cinco mayores el "+Math.round(c5)+"%. "+
+   (it&&bo?"Por eso Ituango, que subió 17,8 pp en 8 días, sumó <strong>"+nf(it[4])+" GWh</strong>, apenas "+pc2(it[4]/T*100)+" de la capacidad del sistema, mientras Agregado Bogotá bajó "+nf(Math.abs(bo[4]))+" GWh.":"");
+  $("wtBody").innerHTML=GWH.map(function(r){var d=r[4],b=pwBig(r,T);return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+(b?'Grande':'Menor')+'</td><td class="r mono">'+nf(r[2])+'</td><td class="r mono">'+pcs(r[2]/T*100)+'</td><td class="r">'+(d==null?"—":'<span class="d '+(d>=0?'up':'dn')+'">'+(d>=0?"+":"−")+nf(Math.abs(d))+'</span>')+'</td></tr>'}).join("");
+  function upd(){PW.show.big=$("cbBig").checked;PW.show.small=$("cbSmall").checked;renderPesoList();if(PW.map)renderPesoMap()}
+  $("cbBig").addEventListener("change",upd);$("cbSmall").addEventListener("change",upd);
+  renderPesoList();
+  if("IntersectionObserver" in window){var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){io.disconnect();renderPesoMap()}},{rootMargin:"300px"});io.observe($("pwmap"))}else renderPesoMap();
+}
 function rainTot(o,y){return o.m[y].reduce(function(a,b){return a+b},0)}
 function rainReg(){
   var rs={};RAIN.forEach(function(c){(rs[c.r]=rs[c.r]||[]).push(c)});
@@ -887,7 +981,7 @@ function yrLine(o){return YEARS.map(function(y){return y+": "+f1(o.v[y])+"%"}).j
 function B_(t){return "<strong>"+t+"</strong>"}
 function ul(a){return "<ul>"+a.map(function(x){return "<li>"+x+"</li>"}).join("")+"</ul>"}
 var DESCARGO="Referencia aproximada, no la operación real.";
-var AI_CHIPS=["¿Cómo va el nivel nacional?","¿Qué región tiene el menor nivel?","¿Cuál bajó más?","¿Cómo está Caldas?","¿Qué embalse está más bajo?","¿Qué significa pp?","¿Qué es el criterio CREG del 70%?","¿Dónde queda Chuza?","¿Quién abastece a las otras regiones?","¿Qué cambió en 8 días?","¿Cuánto llovió de junio a septiembre?"];
+var AI_CHIPS=["¿Cómo va el nivel nacional?","¿Qué región tiene el menor nivel?","¿Cuál bajó más?","¿Cómo está Caldas?","¿Qué embalse está más bajo?","¿Qué significa pp?","¿Qué es el criterio CREG del 70%?","¿Dónde queda Chuza?","¿Quién abastece a las otras regiones?","¿Qué cambió en 8 días?","¿Cuánto llovió de junio a septiembre?","¿Cuánto pesa cada embalse?"];
 
 function cardRegion(r,cy){
   var T=thr(),d=dY(r,cy),m=B(r)-T,emb=res.filter(function(x){return x.r===r.n});
@@ -917,6 +1011,12 @@ function responder(raw){
   var cy=yrs.filter(function(y){return y!==2026})[0]||base;
   var isEmb=/embalse|represa|presa/.test(q)&&!ent.regs.length;
 
+  if(/(cuanto (pesa|aporta|representa)|aporte de cada|que tanto aporta|capacidad (total|util)|gwh|energia almacenada|mayores embalses|embalse mas grande|embalses mas grandes|peso de cada)/.test(q)){
+    var T2=GWH.reduce(function(a,r){return a+r[2]},0),V2=GWH.reduce(function(a,r){return a+r[3]},0);
+    var one=ent.embs[0]?GWH.filter(function(r){var a=norm(r[0]),e=norm(ent.embs[0].n);return a===e||a.indexOf(e)>=0||e.indexOf(a)>=0})[0]:null;
+    if(one)return B_(one[0])+": capacidad útil de "+nf(one[2])+" GWh ("+pcs(one[2]/T2*100)+" de la del país), hoy guarda "+nf(one[3])+" GWh ("+pcs(one[3]/one[2]*100)+" lleno) y aporta "+pcs(one[3]/V2*100)+" de la energía almacenada (XM, 16 oct).";
+    return "Los embalses más grandes del sistema (XM, 16 oct):"+ul(GWH.slice(0,5).map(function(r){return B_(r[0])+": "+nf(r[2])+" GWh, "+pcs(r[2]/T2*100)+" de la capacidad del país, lleno "+pcs(r[3]/r[2]*100)}))+"Entre los 24 suman "+nf(T2)+" GWh y guardan "+nf(V2)+" GWh. Mira la sección «¿Cuánto aporta cada embalse al sistema?».";
+  }
   if(/^(hola|buenas|buenos dias|buenas tardes|buenas noches|hey|saludos)( |$)/.test(q)&&q.split(" ").length<=4)
     return "¡Hola! Puedo contarte cómo van las regiones y los embalses, comparar octubres y explicar los términos del tablero. Elige una pregunta o escribe la tuya.";
   if(/(ayuda|que puedo preguntar|que sabes|que puedes|como funciona|como se usa|como uso|instrucciones)/.test(q))
@@ -1047,5 +1147,5 @@ $("aiClose").addEventListener("click",function(){aiToggle(false)});
 $("aiPanel").addEventListener("keydown",function(e){if(e.key==="Escape")aiToggle(false)});
 $("aiForm").addEventListener("submit",function(e){e.preventDefault();var v=$("aiInput").value.trim();if(!v)return;$("aiInput").value="";aiAsk(v)});
 
-renderHero();renderRows();renderTanks();buildQuiz();renderWeek();renderRain();
+renderHero();renderRows();renderTanks();buildQuiz();renderWeek();renderRain();renderPeso();
 </script>
