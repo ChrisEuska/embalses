@@ -1149,3 +1149,19 @@ $("aiForm").addEventListener("submit",function(e){e.preventDefault();var v=$("ai
 
 renderHero();renderRows();renderTanks();buildQuiz();renderWeek();renderRain();renderPeso();
 </script>
+<script data-goatcounter="https://embalses-euska.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+/* Eventos anónimos (sin cookies): cuenta usos de funciones, no personas */
+(function(){
+  function ev(name){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:"evento/"+name,title:name,event:true})}catch(e){}}
+  document.addEventListener("click",function(e){
+    var t=e.target&&e.target.closest?e.target.closest("button,summary,label"):null;if(!t)return;
+    if(t.hasAttribute("data-rk"))ev("ver-grafica");
+    else if(t.id==="vMapa")ev("mapa-interactivo");
+    else if(t.id==="mmZonas")ev("mapa-cuencas");
+    else if(t.id==="mmPeso")ev("mapa-peso-regional");
+    else if(t.id==="aiBtn")ev("asistente-abrir");
+    else if(t.id==="chBig"||t.id==="chSmall")ev("aporte-filtro");
+  });
+})();
+</script>
